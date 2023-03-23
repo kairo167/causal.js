@@ -1,0 +1,773 @@
+/*                                                                  */
+/*                       C l a r i 3 D  (r)                         */
+/*                                                                  */
+/*                    The ultimate 3D Explorer                      */
+/*                        www.clari3d.com                           */
+/*                                                                  */
+/*           (c) Copyright 2002 to 2021, by Andéor, SAS             */
+/*                      All rights reserved                         */
+/*                                                                  */
+/*                         Andéor, SAS                              */
+/*             SIRET 520 295 643 00024, R.C.S Antibes               */
+/*                        Le Cros d'Azur                            */
+/*                    26 bis avenue des Mimosas                     */
+/*               06800 - Le Cros de Cagnes - France                 */
+/*                                                                  */
+/* This document is the property of  Andéor, SAS.  It is considered */
+/* confidential and proprietary.  This  document may not  be repro- */
+/* duced  or  transmitted in  any form in whole or in part, without */
+/* the express written permission of Andéor, SAS.                   */
+/*                                                                  */
+/* -*-header-*- */
+
+.CS_clear {
+    clear: both;
+}
+
+.CS_vfill {
+    height: 100%;
+}
+
+.CS_hfill {
+    width: 100%;
+}
+
+.CS_noscroll {
+    position: fixed;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+.CS_noselect {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
+}
+
+.CS_hidden {
+    display: none !important;
+}
+
+.CS_blur {
+    filter: blur(5px);
+}
+
+.CS_unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.CS_tree blockquote {
+    overflow: hidden;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-inline-end: 0px;
+    margin-inline-start: 1.25em;
+}
+
+.CS_item .CS_selected {
+    background: #000;
+    color: white;
+}
+
+.CS_tree .CS_item {
+    white-space: nowrap;
+}
+
+.CS_tree .CS_expanded {
+    cursor: pointer;
+}
+
+.CS_tree .CS_collapsed {
+    cursor: pointer;
+}
+
+.CS_tree .CS_hidden {
+    display: none;
+    opacity: 0;
+}
+
+.CS_tree input {
+    display: inline;
+}
+
+.CS_tree .CS_item .CS_nochild::before {
+    content: "\0025BC ";
+    visibility: hidden;
+}
+
+.CS_tree .CS_item .CS_expanded::before {
+    content: "\0025BC ";
+}
+
+.CS_tree .CS_item .CS_collapsed::before {
+    content: "\0025BA ";
+}
+
+.CS_split {
+    width: 100%;
+    overflow: hidden;
+}
+
+.CS_split.CS_wrap .CS_gripper,
+.CS_split.CS_wrap .CS_left {
+    opacity: 0.8;
+    z-index: 20;
+    position: absolute;
+    background-color: white;
+    height: 100%;
+}
+
+.CS_split .CS_left {
+    width: 50%;
+    min-width: 5%;
+    max-width: 95%;
+}
+
+.CS_split .CS_vleft {
+    height: 50%;
+    min-height: 5%;
+    max-height: 95%;
+}
+
+.CS_split .CS_gripper {
+    width: 0.5em;
+    float: left;
+    cursor: pointer;
+    float: left;
+}
+
+.CS_split .CS_vgripper {
+    height: 0.5em;
+    float: top;
+    cursor: pointer;
+    float: top;
+}
+
+.CS_split .CS_left {
+    float: left;
+}
+
+.CS_split .CS_vleft {
+    float: top;
+}
+
+.CS_split .CS_right {
+    float: left;
+}
+
+.CS_split .CS_vright {
+    float: top;
+}
+
+.CS_split .CS_vgripper:hover,
+.CS_split .CS_vgripper-hover,
+.CS_split .CS_gripper:hover,
+.CS_split .CS_gripper-hover {
+    background-color: #aaa;
+}
+
+.CS_split .CS_left,
+.CS_split .CS_right {
+    overflow: hidden;
+}
+
+.CS_split .CS_left,
+.CS_split .CS_right,
+.CS_split .CS_vleft,
+.CS_split .CS_vright {
+    overflow: hidden;
+    position: relative;
+}
+
+.CS_color-picker {
+    width: 100%;
+    height: 100%;
+}
+
+.CS_color-picker tr th {
+    height: 1px;
+}
+
+.CS_menu {
+    white-space: nowrap;
+    float: left;
+    width: 100%;
+    vertical-align: bottom;
+}
+
+.CS_popmenu {
+    white-space: nowrap;
+    position: absolute;
+    border: 1px solid gray;
+}
+
+.CS_popmenu *,
+.CS_menu * {
+    z-index: 30;
+    padding: 0px;
+}
+
+.CS_popmenu .CS_level-1,
+.CS_menu .CS_level-1 {
+    z-index: 31;
+}
+
+.CS_popmenu .CS_level-1 .CS_level-2,
+.CS_menu .CS_level-1 .CS_level-2 {
+    z-index: 32;
+}
+
+.CS_popmenu .CS_level-3,
+.CS_menu .CS_level-3 {
+    z-index: 33;
+}
+
+.CS_popmenu .CS_level-4,
+.CS_menu .CS_level-4 {
+    z-index: 34;
+}
+
+.CS_menu ul,
+.CS_popmenu ul {
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: bottom;
+}
+
+.CS_popmenu ul,
+.CS_menu ul ul,
+.CS_popmenu ul ul,
+.CS_menu ul ul ul,
+.CS_popmenu ul ul ul {
+    background-color: #fff;
+}
+
+.CS_popmenu ul {
+    visibility: visible;
+    position: absolute;
+}
+
+.CS_menu li,
+.CS_popmenu li {
+    position: relative;
+}
+
+.CS_menu li {
+    float: left;
+}
+
+/*
+.CS_menu ul ul, .CS_menu ul ul ul, .CS_menu ul ul ul ul {
+    background-color: #eee;
+}
+*/
+.CS_menu ul ul,
+.CS_menu ul ul ul,
+.CS_menu ul ul ul ul {
+    background-color: none;
+}
+
+.CS_menu a img,
+.CS_popmenu a img,
+.CS_menu a .CS_img-room,
+.CS_popmenu a .CS_img-room {
+    vertical-align: middle;
+    border: 0;
+    width: 1.5em;
+    height: 1.5em;
+    margin-left: auto;
+    margin-right: 0.5em;
+}
+
+.CS_menu a .CS_img-room,
+.CS_popmenu a .CS_img-room {
+    display: inline-block;
+    min-width: 1.5em;
+}
+
+.CS_menu a,
+.CS_popmenu a {
+    padding: 0.2em 1em 0.2em 1em;
+    display: block;
+}
+
+.CS_menu .CS_disabled,
+.CS_popmenu .CS_disabled {
+    font-style: italic;
+    color: #777;
+    opacity: 1 !important;
+    cursor: default !important;
+    pointer-events: none;
+}
+
+.CS_menu ul ul,
+.CS_popmenu ul ul {
+    position: absolute;
+    left: 0px;
+    top: 100%;
+    visibility: hidden;
+    border: 1px solid black;
+}
+
+.CS_menu ul ul ul,
+.CS_popmenu ul ul {
+    left: 100%;
+    top: 0;
+}
+
+.CS_menu ul ul>li,
+.CS_popmenu ul>li {
+    width: 100%;
+}
+
+.CS_menu li.CS_over>ul,
+.CS_popmenu li.CS_over>ul {
+    visibility: visible;
+}
+
+.CS_popmenu li {
+    width: 100%;
+}
+
+.CS_menu ul li.CS_level-2.CS_submenu::after,
+.CS_popmenu li.CS_level-2.CS_submenu::after,
+.CS_menu ul li.CS_level-3.CS_submenu::after,
+.CS_popmenu li.CS_level-3.CS_submenu::after,
+.CS_menu ul li.CS_level-4.CS_submenu::after,
+.CS_popmenu li.CS_level-4.CS_submenu::after {
+    content: "▶";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+.CS_menu ul li a,
+.CS_popmenu li a {
+    color: black;
+}
+
+.CS_menu ul li.CS_over>a,
+.CS_popmenu li.CS_over>a {
+    color: white;
+}
+
+.CS_menu ul li.CS_over,
+.CS_popmenu li.CS_over {
+    background-color: #000;
+}
+
+.CS_menu *,
+.CS_menu *:link,
+.CS_menu *:visited,
+.CS_menu *:active,
+.CS_popmenu *,
+.CS_popmenu *:link,
+.CS_popmenu *:visited,
+.CS_popmenu *:active {
+    text-decoration: none;
+}
+
+.CS_tab {
+    position: relative;
+}
+
+.CS_tab .CS_page {
+    position: relative;
+}
+
+.CS_tab .CS_page .CS_title {
+    background-color: #000;
+}
+
+.CS_tab .CS_page .CS_level-1>a {
+    color: white;
+}
+
+.CS_tab .CS_page .CS_config {
+    border: none;
+    background: none;
+    position: absolute;
+    top: -0.2em;
+    right: 0;
+}
+
+.CS_tab .CS_page .CS_config::after {
+    content: '⚙';
+    color: white;
+    font-size: 200%;
+    cursor: pointer;
+}
+
+.CS_tab .CS_page .CS_content {
+    clear: both;
+}
+
+.CS_dialog {
+    position: absolute;
+    top: 0;
+    z-index: 40;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.CS_dialog .CS_overlay {
+    position: absolute;
+    top: 0em;
+    left: 0em;
+    right: 0em;
+    bottom: 0em;
+}
+
+.CS_dialog .CS_close {
+    background-image: url(causal_close.svg);
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    position: absolute;
+    float: right;
+    top: 0em;
+    right: 0em;
+    cursor: pointer;
+    width: 2em;
+    height: 2em;
+    z-index: 100;
+    transition: transform 0.5s;
+    transform: rotate(0deg);
+}
+
+.CS_dialog .CS_close:hover {
+    filter: brightness(80%);
+    transform: rotate(45deg);
+    transition: transform 0.5s;
+}
+
+.CS_dialog .CS_frame {
+    position: relative;
+    overflow: hidden;
+    padding: 1em;
+    background-color: rgb(0, 0, 0, 0.1);
+}
+
+.CS_dialog .CS_frame_tl,
+.CS_dialog .CS_frame_bl,
+.CS_dialog .CS_frame_br {
+    position: absolute;
+    overflow: hidden;
+    background: gray;
+    width: 1em;
+    height: 1em;
+    opacity: 0.000001;
+}
+
+.CS_dialog .CS_frame_tl {
+    float: left;
+    top: 0em;
+    left: 0em;
+    cursor: nw-resize;
+}
+
+.CS_dialog .CS_frame_bl {
+    float: left;
+    bottom: 0em;
+    left: 0em;
+    cursor: sw-resize;
+}
+
+.CS_dialog .CS_frame_br {
+    float: right;
+    bottom: 0em;
+    right: 0em;
+    cursor: se-resize;
+}
+
+.CS_dialog .CS_content {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #cccccc;
+    background-color: white;
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+.CS_dialog .CS_content>* {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.CS_dialog .CS_shortcuts {
+    padding: 1em;
+    display: table;
+}
+
+.CS_dialog .CS_shortcuts>div {
+    display: table-row;
+}
+
+.CS_dialog .CS_shortcuts div:nth-child(1) span {
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+}
+
+.CS_dialog .CS_shortcuts>div>span {
+    display: table-cell;
+    padding: 0 1em 0 1em;
+}
+
+.CS_dialog .CS_shortcuts>div>span:nth-child(3) {
+    text-align: left;
+}
+
+.clari3d .CS_mask_image {
+    position: relative;
+    display: inline-block;
+}
+
+.clari3d .CS_mask_image img {
+    visibility: hidden;
+}
+
+.clari3d .CS_mask_image div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: top;
+}
+
+.CS_toolbar {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.CS_toolbar a {
+    display: inline-block;
+    margin-right: auto;
+    padding: 0em 1em 0em 1em;
+    text-align: center;
+}
+
+.CS_toolbar a:hover {
+    background-color: #aaa;
+}
+
+.CS_toolbar .CS_toggled {
+    background-color: #ccc;
+}
+
+.CS_toolbar .CS_toggled:hover {
+    background-color: #aaa;
+}
+
+.CS_toolbar a span {
+    display: table-row;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.CS_toolbar a img {
+    display: table-row;
+    border: 0;
+    width: 2em;
+    height: 2em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.CS_no-border {
+    border-width: 0px !important;
+}
+
+.CS_no-padding {
+    padding: 0px !important;
+}
+
+.CS_no-margin {
+    margin: 0px !important;
+}
+
+.CS_no-left_margin {
+    margin-left: 0px !important;
+}
+
+.CS_no-right-margin {
+    margin-right: 0px !important;
+}
+
+.CS_no-top-margin {
+    margin-top: 0px !important;
+}
+
+.CS_no-bottom-margin {
+    margin-bottom: 0px !important;
+}
+
+.CS_tooltip {
+    position: absolute;
+    background-color: white;
+    z-index: 100;
+}
+
+.CS_tooltip table {
+    border-collapse: collapse;
+}
+
+.CS_cookie {
+    display: none;
+}
+
+.CS_notify {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 50;
+    border: 1px solid black;
+    border-radius: 1em;
+    padding: 1em 2em 1em 4em;
+    -webkit-transition: opacity 5s ease-out;
+    transition: opacity 0.8s ease-out;
+    max-height: 90%;
+    max-width: 90%;
+    overflow: auto;
+    background-repeat: no-repeat;
+    background-size: 2.5em 2.5em;
+    background-origin: border-box;
+    background-position: 1em 45%;
+}
+
+.CS_notify,
+.CS_notify li {
+    text-align: left;
+}
+
+.CS_notify.CS_error {
+    background-color: #f44;
+    color: white;
+    border-color: #900;
+    background-image: url('causal_error.svg');
+}
+
+.CS_notify.CS_success {
+    background-color: #0f0;
+    border-color: #090;
+    background-image: url('causal_success.svg');
+}
+
+.CS_notify.CS_warning {
+    background-color: #fa0;
+    border-color: #d80;
+    background-image: url('causal_warning.svg');
+}
+
+.CS_notify.CS_success,
+.CS_notify.CS_warning {
+    color: #444;
+}
+
+.CS_disabled,
+.CS_disabled:hover {
+    filter: opacity(30%) grayscale(100%);
+    -webkit-filter: opacity(30%) grayscale(100%);
+    cursor: default !important;
+    pointer-events: none;
+}
+
+details.CS_details_opened {}
+
+details.CS_details_closed {}
+
+details.CS_details_opened * {}
+
+details.CS_details_closed * {
+    display: none;
+}
+
+details.CS_details_opened summary {
+    display: block;
+}
+
+details.CS_details_closed summary {
+    display: block;
+}
+
+details.CS_details_opened summary::before {
+    content: "▼ ";
+}
+
+details.CS_details_closed summary::before {
+    content: "► ";
+}
+
+.CS_upload {
+    border: 1em dashed #73baff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.CS_upload.CS_hover {
+    background-color: #d6f0ff;
+    border: 1em dashed #73baff;
+}
+
+.CS_upload progress {
+    width: 100%;
+}
+
+.CS_upload progress:after {
+    content: '%';
+}
+
+.CS_upload_image {
+    background-image: url(causal_upload.svg);
+    background-repeat: no-repeat;
+    background-size: 4em;
+    background-position: center;
+    background-size: contain;
+    margin-bottom: 1em;
+    height: 4em;
+    z-index: 100;
+    display: block;
+}
+
+.CS_editable {
+    cursor: pointer;
+    position: relative;
+}
+
+.CS_editable input,
+.CS_editable select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}

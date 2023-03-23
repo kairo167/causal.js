@@ -1,0 +1,84 @@
+<!--                                                                  -->
+<!--                       C l a r i 3 D  (r)                         -->
+<!--                                                                  -->
+<!--                    The ultimate 3D Explorer                      -->
+<!--                        www.clari3d.com                           -->
+<!--                                                                  -->
+<!-- (c) Copyright 2002 to 2018, by Andéor, SAS - All rights reserved -->
+<!--                                                                  -->
+<!--         Andéor, SAS - SIRET 520 295 643 00016. R.C.S Nice        -->
+<!--  Le Sonora B. 71, avenue de la Lanterne - 06200 - Nice - FRANCE  -->
+<!--                                                                  -->
+<!-- This document is the property of  Andéor, SAS.  It is considered -->
+<!-- confidential and proprietary.  This  document may not  be repro- -->
+<!-- duced  or  transmitted in  any form in whole or in part, without -->
+<!-- the express written permission of Andéor, SAS.                   -->
+<!--                                                                  -->
+<!-- -*-header-*- -->
+<table>
+  <tr>
+    <th colspan="4">
+      Log settings
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <label>
+	Auto refresh
+      </label>
+    </td>
+    <td>
+      <input id="auto-refresh" type="range" name="Auto Refresh" 
+	     min="0" max="30000" step="50" 
+	     onchange="updateRange ('auto-refresh-value', this.value, '&nbsp;ms');"
+	     value="10000">
+    </td>
+    <td id="auto-refresh-value">
+      10000&nbsp;ms
+    </td>
+    <td>
+      Allow the log page to be automaticaly refreshed. 0 value disables
+      auto-refresh.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label>
+	Number of lines
+      </label>
+    </td>
+    <td>
+      <input id="lines" type="range" name="Lines" 
+	     min="0" max="2000" step="50" 
+	     onchange="updateRange ('lines-value', this.value, '&nbsp;lines');"
+	     value="1000">
+    </td>
+    <td id="lines-value">
+      300&nbsp;lines
+    </td>
+    <td>
+      Number of lines to display per page. A 0 value means to display
+      all the lines.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label>
+	Go to the last log entry
+      </label>
+    </td>
+    <td>
+      <input id="last" type="checkbox" name="last" checked>
+    </td>
+    <td>
+      &nbsp;
+    <td>
+      Go to the last log entry.
+    </td>
+  </tr>
+  <tr align="center">
+    <td colspan="4">
+      <input type="submit" value="ok" />
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,302 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Slideshow 2</title>
+    <link rel="stylesheet" type="text/css" href="../causal.css" />
+    <link rel="stylesheet" type="text/css" href="../causal_slide.css" />
+    <script type="text/javascript" src="../causal.js"></script>
+    <script type="text/javascript" src="../causal_class.js"></script>
+    <script type="text/javascript" src="../causal_crypto.js"></script>
+    <script type="text/javascript" src="../causal_details.js"></script>
+    <script type="text/javascript" src="../causal_dialog.js"></script>
+    <script type="text/javascript" src="../causal_editable.js"></script>
+    <script type="text/javascript" src="../causal_event.js"></script>
+    <script type="text/javascript" src="../causal_form.js"></script>
+    <script type="text/javascript" src="../causal_io.js"></script>
+    <script type="text/javascript" src="../causal_local.js"></script>
+    <script type="text/javascript" src="../causal_menu.js"></script>
+    <script type="text/javascript" src="../causal_notify.js"></script>
+    <script type="text/javascript" src="../causal_shortcut.js"></script>
+    <script type="text/javascript" src="../causal_slide.js"></script>
+    <script type="text/javascript" src="../causal_split.js"></script>
+    <script type="text/javascript" src="../causal_string.js"></script>
+    <script type="text/javascript" src="../causal_style.js"></script>
+    <script type="text/javascript" src="../causal_tab.js"></script>
+    <script type="text/javascript" src="../causal_tooltip.js"></script>
+    <script type="text/javascript" src="../causal_tree.js"></script>
+    <script>
+      function set_mode (mode) {
+        if (typeof mode == "string") {
+          let the_name;
+          for (input of document.querySelectorAll ('#myconfigure input')) {
+            if (input.value == mode) {
+              the_name = input.name;
+              break;
+            }
+          }
+          for (input of document.querySelectorAll ('#myconfigure input')) {
+            if (input.name == the_name) {
+              input.checked = input.value == mode ? true : false;
+            }
+          }
+        }
+        else {
+          window.event.stopPropagation();
+          mode = window.event.target.value;
+        }
+
+        let myslideshow = document.getElementById ('myslideshow');
+        myslideshow.setMode (mode);
+        let mymode = document.getElementById
+          (myslideshow.speeds.includes    (mode) ? 'myspeed' :
+           myslideshow.directions.includes(mode) ? 'mydirection' :
+           'mymode');
+        mymode.innerHTML = mode;
+      }
+      function onslide() {
+        let myslideshow = document.getElementById ('myslideshow');
+        let current     = document.getElementById ('mycurrent');
+        let nb_slides   = document.getElementById ('mynb_slides');
+        current.innerHTML   = myslideshow.current + 1;
+        nb_slides.innerHTML = myslideshow.nb_slides;
+      }
+      function onconfigure() {
+        let myslideshow = document.getElementById ('myslideshow');
+        let myconfigure = document.getElementById ('myconfigure');
+
+        if (myconfigure.parentNode != myslideshow) {
+          myslideshow.appendChild (myconfigure);
+          myconfigure.style.display    = 'inline-block';
+          myconfigure.style.visibility = 'visible';
+          myconfigure.visible          = false;
+          myconfigure.offsetHeight;
+        }
+        if (myconfigure.visible == false) {
+          myconfigure.visible         = true;
+          myconfigure.style.transform = 'translateX(110%) translateY(-50%)';
+        }
+        else {
+          myconfigure.visible         = false;
+          myconfigure.style.transform = 'translateX(0%) translateY(-50%)';
+        }
+      }
+    </script>
+    <style>
+    body {
+      font-family: sans-serif;
+      color: #555;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    #mymode, #myspeed {
+      font-size: 110%;
+    }
+    #myconfigure {
+      display: none;
+      position: absolute;
+      right: 2em;
+      top: 50%;
+      z-index: 10;
+      font-size: 60%;
+      padding: 0.5em;
+      margin: 0;
+      background-color: #eee;
+      border: 1px solid #aaa;
+      border-radius: 0.5em;
+      visibility: hidden;
+      transition: all 1s ease;
+      transform: translateY(-50%)
+    }
+    #myconfigure > div > div {
+      background-color: #fff;
+      border: 1px solid #aaa;
+      border-radius: 0.3em;
+      margin: 0.3em;
+      padding: 0.5em;
+    }
+    #myconfigure label {
+      white-space: nowrap;
+      display: block;
+    }
+    .CS_slideshow {
+      background-color: #eee;
+      padding: 1em;
+      width: 70%;
+      height: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-51%) translateY(-51%);
+    }
+    .CS_slideshow .button:hover {
+      opacity: 1;
+    }
+    .CS_slideshow .slide {
+      text-align: center;
+    }
+    .CS_slideshow .slide:nth-child(1) {
+      background-color: #faa;
+    }
+    .CS_slideshow .slide:nth-child(2) {
+      background-color: #afa;
+    }
+    .CS_slideshow .slide:nth-child(3) {
+      background-color: #aaf;
+    }
+    .CS_slideshow .slide:nth-child(4) {
+      background-color: #ffa;
+    }
+    .CS_slideshow .slide:nth-child(5) {
+      background-color: #aff;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>
+      Slide show
+      <span id="mymode">
+        mode
+      </span>,
+      <span id="mydirection">
+        direction
+      </span>,
+      <span id="myspeed">
+        speed
+      </span>
+    </h1>
+    <h2>
+      Size specified in the slide.
+    <br>
+    Slide <span id="mycurrent"></span>
+    /
+    <span id="mynb_slides"></span>
+    </h2>
+    <div id="myconfigure">
+      <div>
+        <div>
+          <label>
+            <input type="radio"
+                   name="speed"
+                   value="no"
+                   onclick="set_mode()">
+            <span>Immediate</span>
+          </label>
+          <label>
+            <input type="radio"
+                   name="speed"
+                   value="slow"
+                   onclick="set_mode (this);">
+            <span>Slow</span>
+          </label>
+          <label>
+            <input type="radio"
+                   name="speed"
+                   value="fast"
+                   onclick="set_mode (this);">
+            <span>Fast</span>
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="radio"
+                   name="direction"
+                   value="horizontal"
+                   onclick="set_mode()">
+            <span>Horizontal</span>
+          </label>
+          <label>
+            <input type="radio"
+                   name="direction"
+                   value="vertical"
+                   onclick="set_mode()">
+            <span>Vertical</span>
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="radio"
+                   name="mode"
+                   value="visible"
+                   onclick="set_mode (this);">
+            <span>Visible</span>
+          </label>
+          <label>
+            <input type="radio"
+                   name="mode"
+                   value="opacity"
+                   onclick="set_mode (this);">
+            <span>Opacity</span>
+          </label>
+          <label>
+            <input type="radio"
+                   name="mode"
+                   value="scale"
+                   onclick="set_mode (this);">
+            <span>Scale</span>
+          </label>
+          <label>
+            <input type="radio"
+                   name="mode"
+                   value="translate"
+                   onclick="set_mode (this);">
+            <span>Translate</span>
+          </label>
+          <label>
+            <input type="radio"
+                   name="mode"
+                   value="cube"
+                   onclick="set_mode (this);">
+            <span>3D cube</span>
+          </label>
+          <label>
+            <input type="radio"
+                   name="mode"
+                   value="book"
+                   onclick="set_mode (this);">
+            <span>3D book</span>
+          </label>
+          <label>
+            <input type="radio"
+                   name="mode"
+                   value="page"
+                   onclick="set_mode (this);">
+            <span>3D page</span>
+          </label>
+          <label>
+            <input type="radio"
+                   name="mode"
+                   value="flip"
+                   onclick="set_mode (this);">
+            <span>3D flip</span>
+          </label>
+          <label>
+            <input type="radio"
+                   name="mode"
+                   value="random"
+                   onclick="set_mode (this);">
+            <span>Random</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div id="myslideshow"
+         class="CS_slideshow"
+         onslide="onslide()"
+         onconfigure="onconfigure()"
+         autostart="5000">
+      <div><p>Slide 0</p></div>
+      <div><p>Slide 1</p></div>
+      <div><p>Slide 2</p></div>
+      <div><p>Slide 3</p></div>
+      <div><p>Slide 4</p></div>
+    </div>
+    <script>
+      CS_add_ready (function() {
+                      set_mode ('slow');
+                      set_mode ('horizontal');
+                      set_mode ('translate');
+                    });
+    </script>
+  </body>
+</html>

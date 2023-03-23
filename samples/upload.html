@@ -1,0 +1,55 @@
+<!--                                                                  -->
+<!--                       C l a r i 3 D  (r)                         -->
+<!--                                                                  -->
+<!--                    The ultimate 3D Explorer                      -->
+<!--                        www.clari3d.com                           -->
+<!--                                                                  -->
+<!-- (c) Copyright 2002 to 2018, by Andéor, SAS - All rights reserved -->
+<!--                                                                  -->
+<!--         Andéor, SAS - SIRET 520 295 643 00016. R.C.S Nice        -->
+<!--  Le Sonora B. 71, avenue de la Lanterne - 06200 - Nice - FRANCE  -->
+<!--                                                                  -->
+<!-- This document is the property of  Andéor, SAS.  It is considered -->
+<!-- confidential and proprietary.  This  document may not  be repro- -->
+<!-- duced  or  transmitted in  any form in whole or in part, without -->
+<!-- the express written permission of Andéor, SAS.                   -->
+<!--                                                                  -->
+<!-- -*-header-*- -->
+<!DOCTYPE html>
+<html height="100%"  style="height: 100%">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Upload</title>
+    <link rel="stylesheet" type="text/css" href="../causal.css" />
+    <script type="text/javascript" src="../causal.js"></script>
+    <script type="text/javascript" src="../causal_class.js"></script>
+    <script type="text/javascript" src="../causal_editable.js"></script>
+    <script type="text/javascript" src="../causal_event.js"></script>
+    <script type="text/javascript" src="../causal_io.js"></script>
+    <script type="text/javascript" src="../causal_notify.js"></script>
+    <script type="text/javascript" src="../causal_upload.js"></script>
+    <style>
+      #drop-zone {
+      width: 15em;
+      height: 7em;
+      }
+    </style>
+  </head>
+  <body height="100%" style="height: 100%">
+    <h1>Upload sample</h1>
+    <p>
+      This page demonstrates the upload functionality of the causal.js
+      framework.
+    </p>
+    <p>
+      Drop an image in the drop zone...
+    </p>
+    <center>
+      <form id="drop-zone"
+            class="CS_upload"
+            action="upload.php">
+        <input type="hidden" name="r" value="admin">
+      </form>
+    </center>
+  </body>
+</html>

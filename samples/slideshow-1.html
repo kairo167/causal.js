@@ -1,0 +1,136 @@
+<!--                                                                  -->
+<!--                       C l a r i 3 D  (r)                         -->
+<!--                                                                  -->
+<!--                    The ultimate 3D Explorer                      -->
+<!--                        www.clari3d.com                           -->
+<!--                                                                  -->
+<!-- (c) Copyright 2002 to 2018, by Andéor, SAS - All rights reserved -->
+<!--                                                                  -->
+<!--         Andéor, SAS - SIRET 520 295 643 00016. R.C.S Nice        -->
+<!--  Le Sonora B. 71, avenue de la Lanterne - 06200 - Nice - FRANCE  -->
+<!--                                                                  -->
+<!-- This document is the property of  Andéor, SAS.  It is considered -->
+<!-- confidential and proprietary.  This  document may not  be repro- -->
+<!-- duced  or  transmitted in  any form in whole or in part, without -->
+<!-- the express written permission of Andéor, SAS.                   -->
+<!--                                                                  -->
+<!-- -*-header-*- -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  style="height: 100%; width: 100%;">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Slideshow 1</title>
+    <link rel="stylesheet" type="text/css" href="../causal.css" />
+    <link rel="stylesheet" type="text/css" href="../causal_slide.css" />
+    <script type="text/javascript" src="../causal.js"></script>
+    <script type="text/javascript" src="../causal_class.js"></script>
+    <script type="text/javascript" src="../causal_crypto.js"></script>
+    <script type="text/javascript" src="../causal_details.js"></script>
+    <script type="text/javascript" src="../causal_dialog.js"></script>
+    <script type="text/javascript" src="../causal_editable.js"></script>
+    <script type="text/javascript" src="../causal_event.js"></script>
+    <script type="text/javascript" src="../causal_form.js"></script>
+    <script type="text/javascript" src="../causal_io.js"></script>
+    <script type="text/javascript" src="../causal_local.js"></script>
+    <script type="text/javascript" src="../causal_menu.js"></script>
+    <script type="text/javascript" src="../causal_notify.js"></script>
+    <script type="text/javascript" src="../causal_shortcut.js"></script>
+    <script type="text/javascript" src="../causal_slide.js"></script>
+    <script type="text/javascript" src="../causal_split.js"></script>
+    <script type="text/javascript" src="../causal_string.js"></script>
+    <script type="text/javascript" src="../causal_style.js"></script>
+    <script type="text/javascript" src="../causal_tab.js"></script>
+    <script type="text/javascript" src="../causal_tooltip.js"></script>
+    <script type="text/javascript" src="../causal_tree.js"></script>
+    <script>
+      function onslide() {
+        let s = document.getElementById ("myslides");
+        document.getElementById ("msg").innerHTML =
+          'Switch slide to ' + (s.current + 1) + "/" + s.nb_slides;
+      }
+    </script>
+    <style>
+      body {
+        background:#ccccee;
+        height: 100%;
+        width: 100%;
+      }
+      .CS_slideshow {
+        border: 3px solid #333;
+        padding: 0.5em;
+        margin: 1em;
+        border-radius: 1em;
+        display: inline-block;
+      }
+      .CS_slideshow .slide img {
+        width: 20em;
+        height: 15em;
+      }
+      .CS_slideshow .slide > div {
+        position: absolute;
+        bottom: 10%;
+        right: 10%;
+        padding: 0 1em 0 1em;
+        background-color: rgba(255,255,255,0.8);
+        border-radius: 1em;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body style="background:#ccccee; height: 100%; width: 100%;">
+    <p>
+      This a nice slideshow...
+    </p>
+    <div style="clear: both">&nbsp;</div>
+    <div id="myslides"
+         class="CS_slideshow horizontal book"
+         onslide="onslide()">
+      <div>
+        <img src="images/slideshow-1.jpg" />
+        <div>
+          <p>
+            Slide number 1
+          </p>
+          <p>
+            Is it cool!
+          </p>
+        </div>
+      </div>
+      <div>
+        <img src="images/slideshow-2.jpg" />
+        <div>
+          <p>
+            Slide number 2
+          </p>
+          <p>
+            Is it very cool!
+          </p>
+        </div>
+      </div>
+      <div>
+        <img src="images/slideshow-3.jpg" />
+        <div>
+          <p>
+            Slide number 3
+          </p>
+          <p>
+            Is it very vary vary cool!
+          </p>
+        </div>
+      </div>
+      <div>
+        <img src="images/slideshow-4.jpg" />
+        <div>
+          <p>
+            Slide number 4
+          </p>
+          <p>
+            Is it not cool!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div id="msg"></div>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="25" height="25" viewBox="0, 0, 25, 25">
+  <g id="Calque_1">
+    <path d="M23.794,12.882 C23.794,19.022 18.817,24 12.676,24 C6.536,24 1.559,19.022 1.559,12.882 C1.559,6.742 6.536,1.765 12.676,1.765 C18.817,1.765 23.794,6.742 23.794,12.882 z" fill="#4D4D4D" id="path2991-5" opacity="0.39"/>
+    <g id="path2991">
+      <path d="M24,11.882 C24,17.584 19.378,22.206 13.676,22.206 C7.975,22.206 3.353,17.584 3.353,11.882 C3.353,6.181 7.975,1.559 13.676,1.559 C19.378,1.559 24,6.181 24,11.882 z" fill="#00FF0A"/>
+      <path d="M24,11.882 C24,17.584 19.378,22.206 13.676,22.206 C7.975,22.206 3.353,17.584 3.353,11.882 C3.353,6.181 7.975,1.559 13.676,1.559 C19.378,1.559 24,6.181 24,11.882 z" fill-opacity="0" stroke="#119B40" stroke-width="1.376"/>
+    </g>
+    <g id="g3801">
+      <g id="path2995-9">
+        <path d="M19.375,7.375 L12.5,17.25" fill="#FFFFFF"/>
+        <path d="M19.375,7.375 L12.5,17.25" fill-opacity="0" stroke="#FFFFFF" stroke-width="2.964" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <g id="path2995-9-9">
+        <path d="M7.5,11.375 L12,16.875" fill="#FFFFFF"/>
+        <path d="M7.5,11.375 L12,16.875" fill-opacity="0" stroke="#FFFFFF" stroke-width="2.964" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </g>
+  </g>
+</svg>

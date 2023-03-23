@@ -1,0 +1,783 @@
+/*                                                                  */
+/*                       C l a r i 3 D  (r)                         */
+/*                                                                  */
+/*                    The ultimate 3D Explorer                      */
+/*                        www.clari3d.com                           */
+/*                                                                  */
+/*           (c) Copyright 2002 to 2021, by Andéor, SAS             */
+/*                      All rights reserved                         */
+/*                                                                  */
+/*                         Andéor, SAS                              */
+/*             SIRET 520 295 643 00024, R.C.S Antibes               */
+/*                        Le Cros d'Azur                            */
+/*                    26 bis avenue des Mimosas                     */
+/*               06800 - Le Cros de Cagnes - France                 */
+/*                                                                  */
+/* This document is the property of  Andéor, SAS.  It is considered */
+/* confidential and proprietary.  This  document may not  be repro- */
+/* duced  or  transmitted in  any form in whole or in part, without */
+/* the express written permission of Andéor, SAS.                   */
+/*                                                                  */
+/* -*-header-*- */
+/* d i s p l a y  /  v i s i b i l i t y  /  p o s i t i o n  /  s i z e */
+
+.CS_slideshow {
+  z-index: 10;
+}
+.CS_slideshow .carousel {
+  z-index: 20;
+}
+.CS_slideshow > .button {
+  z-index: 30;
+}
+.CS_slideshow .indicators {
+  z-index: 50;
+}
+.CS_slideshow > .button.config {
+  z-index: 60;
+}
+.CS_slideshow .slide {
+  z-index: 10;
+}
+.CS_slideshow .slide.selected {
+  z-index: 20;
+}
+.CS_slideshow,
+.CS_slideshow .carousel {
+  position: relative;
+}
+.CS_slideshow.focus:hover {
+  transform: scale(1.05) translateX(-50%) translateY(-50%);
+  transform-origin: center;
+}
+.CS_slideshow,
+.CS_slideshow * {
+  box-sizing: border-box;
+}
+.CS_slideshow > .button {
+  position: absolute;
+}
+.CS_slideshow > .button.previous,
+.CS_slideshow > .button.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 30%;
+}
+.CS_slideshow > .button.previous {
+  left: 0;
+}
+.CS_slideshow > .button.next {
+  right: 0;
+}
+.CS_slideshow.vertical > .button.previous,
+.CS_slideshow.vertical > .button.next {
+  width: 100%;
+  height: auto;
+  right: initial;
+  left: 0;
+  transform: translateY(0);
+}
+.CS_slideshow.vertical > .button.previous {
+  top: 0;
+  bottom: initial;
+}
+.CS_slideshow.vertical > .button.next {
+  bottom: 0;
+  top: unset;
+}
+.CS_slideshow.vertical > .button {
+  left: calc(50% - 1em);
+  bottom: unset;
+}
+.CS_slideshow .indicators {
+  height: 1.5em;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.CS_slideshow.no-indicators .indicators {
+  visibility: hidden;
+}
+.CS_slideshow .indicators .indicator {
+  display: inline;
+  margin: 0 0.3em;
+}
+.CS_slideshow.vertical .indicators {
+  top: 50%;
+  right:  0.3em;
+  left: auto;
+  bottom: auto;
+  transform: translateY(-50%);
+  display: table;
+}
+.CS_slideshow.vertical .indicators .indicator {
+  display: table-row;
+}
+.CS_slideshow > .button.config {
+  bottom: -0.1em;
+  right: -0.1em;
+  left: auto;
+}
+.CS_slideshow > .button.config > * {
+  position: absolute;
+  visibility: hidden;
+  left: 80%;
+  top: 80%
+}
+.CS_slideshow .carousel {
+  height: 100%;
+}
+.CS_slideshow.vertical .carousel {
+  height: 100%;
+  width: calc(100% - 0.3em);
+}
+.CS_slideshow .slide {
+  width:  100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.CS_slideshow .slide:last-child {
+  position: relative;
+  visibility: hidden;
+}
+
+
+/* c o n t e n t s   a n d   c u s o r */
+
+.CS_slideshow > .button.previous::after {
+  content: '◀';
+}
+.CS_slideshow > .button.next::after {
+  content: '▶';
+}
+.CS_slideshow > .button.previous:hover {
+  cursor: w-resize;
+}
+.CS_slideshow > .button.next:hover {
+  cursor: e-resize;
+}
+.CS_slideshow.vertical > .button.previous {
+  cursor: n-resize;
+}
+.CS_slideshow.vertical > .button.previous::after {
+  content: '▲';
+}
+.CS_slideshow.vertical > .button.next {
+  cursor: s-resize;
+}
+.CS_slideshow.vertical > .button.next::after {
+  content: '▼';
+}
+.CS_slideshow > .button.config::after {
+  content: '⚙';
+}
+.CS_slideshow .indicators {
+  text-align: center;
+}
+.CS_slideshow .indicators .indicator {
+  cursor: pointer;
+}
+.CS_slideshow .indicators .indicator.selected {
+  cursor: initial;
+}
+.CS_slideshow .indicators .indicator:after {
+  content: "○";
+}
+.CS_slideshow .indicators .indicator.selected:after {
+  content: "●";
+}
+
+
+/* c o l o r s   a n d   v i s u a l   a t t r i b u t e s */
+
+.CS_slideshow,
+.CS_slideshow * {
+  outline: none;
+}
+.CS_slideshow .carousel {
+  overflow: hidden;
+}
+.CS_slideshow > .button {
+  border:  0;
+  opacity: 0.1;
+}
+.CS_slideshow > .button.previous,
+.CS_slideshow > .button.next {
+  background-color: #0000;
+  border-radius: 0.5em;
+  font-size: 200%;
+  border:  0;
+  opacity: 0.1;
+}
+.CS_slideshow > .button:hover {
+  background-color: #fffa;
+  opacity: 1;
+}
+.CS_slideshow > .button.config {
+  font-size: 150%;
+  background-color: #0000;
+}
+.CS_slideshow .indicators .indicator {
+  font-size: 130%;
+}
+.CS_slideshow .button,
+.CS_slideshow .indicator {
+  color: #999;
+}
+.CS_slideshow .button:hover,
+.CS_slideshow .indicator:hover {
+  color: #333;
+}
+.CS_slideshow .carousel {
+  /* bug fix: without this invisible border, the carousel is not
+   * correctely positionned for some reason...
+   */
+  border: 1px solid #0000;
+}
+
+/* t r a n s i t i o n   /  a n i m a t i o n   s p e e d */
+
+.CS_slideshow.fast .slide {
+  transition: all 0.5s;
+  animation-duration: 0.5s;
+}
+.CS_slideshow.slow .slide {
+  transition: all 1.2s;
+  animation-duration: 1.2s;
+}
+.CS_slideshow.no .slide {
+  transition: none !important;
+  animation-duration: 0s;
+}
+.CS_slideshow .slide {
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
+.CS_slideshow .indicator,
+.CS_slideshow .button {
+  transition: all 0.8s;
+}
+
+
+/* T R A N S I T I O N   /   A N I M A T I O N S */
+
+.CS_slideshow .slide.centerToLeftOrTop,
+.CS_slideshow .slide.centerToRightOrBottom {
+  z-index: 20;
+}
+
+.CS_slideshow .slide.rightOrBottomToCenter,
+.CS_slideshow .slide.leftOrTopToCenter {
+  z-index: 30;
+}
+
+/* visible mode */
+
+.CS_slideshow.visible .slide {
+  visibility: hidden;
+}
+.CS_slideshow.visible .slide.selected {
+  visibility: visible;
+}
+
+
+/* opacity mode */
+.CS_slideshow.opacity .slide {
+  opacity: 0;
+}
+.CS_slideshow.opacity .slide.selected {
+  opacity: 1;
+}
+
+
+/* scale mode */
+.CS_slideshow.scale .slide {
+  transform: scale(0);
+}
+.CS_slideshow.scale .slide.selected {
+  transform: scale(1);
+}
+
+
+/* translate.horizontal mode */
+.CS_slideshow.translate.horizontal .slide {
+}
+
+/*           top  center bottom
+ *           left center right
+ * next:           old   new
+ *           old   new
+ *
+ * previous: new   old
+ *                 new   old
+ */
+.CS_slideshow.translate.horizontal .slide.centerToLeftOrTop {
+  animation-name: CS_translateCenterToLeft;
+}
+.CS_slideshow.translate.horizontal .slide.rightOrBottomToCenter {
+  animation-name: CS_translateRightToCenter;
+}
+.CS_slideshow.translate.horizontal .slide.centerToRightOrBottom {
+  animation-name: CS_translateCenterToRight;
+}
+.CS_slideshow.translate.horizontal .slide.leftOrTopToCenter {
+  animation-name: CS_translateLeftToCenter;
+}
+@keyframes CS_translateCenterToLeft {
+  from { transform: translateX(0);      }
+  to   { transform: translateX(-100%);  }
+}
+@keyframes CS_translateRightToCenter {
+  from { transform: translateX(+100%);  }
+  to   { transform: translateX(0);      }
+}
+@keyframes CS_translateCenterToRight {
+  from { transform: translateX(0);      }
+  to   { transform: translateX(+100%);  }
+}
+@keyframes CS_translateLeftToCenter {
+  from { transform: translateX(-100%);  }
+  to   { transform: translateX(0);      }
+}
+
+
+/* translate.vertical mdoe */
+.CS_slideshow.translate.vertical .slide.centerToLeftTop {
+  animation-name: CS_translateCenterToTop;
+}
+.CS_slideshow.translate.vertical .slide.rightOrBottomToCenter {
+  animation-name: CS_translateBottomToCenter;
+}
+.CS_slideshow.translate.vertical .slide.centerToRightOrBottom {
+  animation-name: CS_translateCenterToBottom;
+}
+.CS_slideshow.translate.vertical .slide.leftOtTopToCenter {
+  animation-name: CS_translateTopToCenter;
+}
+@keyframes CS_translateCenterToTop {
+  from { transform: translateY(0);     }
+  to   { transform: translateY(-100%); }
+}
+@keyframes CS_translateBottomToCenter {
+  from { transform: translateY(+100%); }
+  to   { transform: translateY(0);     }
+}
+@keyframes CS_translateCenterToBottom {
+  from { transform: translateY(0);     }
+  to   { transform: translateY(+100%); }
+}
+@keyframes CS_translateTopToCenter {
+  from { transform: translateY(-100%);  }
+  to   { transform: translateY(0);      }
+}
+
+
+/* cube / book / page */
+.CS_slideshow.cube > .carousel,
+.CS_slideshow.book > .carousel,
+.CS_slideshow.page > .carousel,
+.CS_slideshow.flip > .carousel {
+  perspective: 1500px;
+  overflow: visible;
+}
+.CS_slideshow.cube .slide,
+.CS_slideshow.book .slide,
+.CS_slideshow.page .slide,
+.CS_slideshow.flip .slide {
+  visibility: hidden;
+}
+.CS_slideshow.cube .slide.centerToLeftOrTop,
+.CS_slideshow.cube .slide.rightOrBottomToCenter,
+.CS_slideshow.cube .slide.centerToRightOrBottom,
+.CS_slideshow.cube .slide.leftOrTopToCenter,
+.CS_slideshow.cube .slide.selected,
+.CS_slideshow.book .slide.centerToLeftOrTop,
+.CS_slideshow.book .slide.rightOrBottomToCenter,
+.CS_slideshow.book .slide.centerToRightOrBottom,
+.CS_slideshow.book .slide.leftOrTopToCenter,
+.CS_slideshow.book .slide.selected,
+.CS_slideshow.page .slide.centerToLeftOrTop,
+.CS_slideshow.page .slide.rightOrBottomToCenter,
+.CS_slideshow.page .slide.centerToRightOrBottom,
+.CS_slideshow.page .slide.leftOrTopToCenter,
+.CS_slideshow.page .slide.selected,
+.CS_slideshow.flip .slide.centerToLeftOrTop,
+.CS_slideshow.flip .slide.rightOrBottomToCenter,
+.CS_slideshow.flip .slide.centerToRightOrBottom,
+.CS_slideshow.flip .slide.leftOrTopToCenter,
+.CS_slideshow.flip .slide.selected {
+  visibility: visible;
+}
+
+
+/* cube.horizontal mode */
+.CS_slideshow.cube.horizontal .slide.centerToLeftOrTop {
+  animation-name: CS_cubeHorizontalCenterToLeft;
+}
+.CS_slideshow.cube.horizontal .slide.rightOrBottomToCenter {
+  animation-name: CS_cubeHorizontalRightToCenter;
+}
+.CS_slideshow.cube.horizontal .slide.centerToRightOrBottom {
+  animation-name: CS_cubeHorizontalCenterToRight;
+}
+.CS_slideshow.cube.horizontal .slide.leftOrTopToCenter {
+  animation-name: CS_cubeHorizontalLeftToCenter;
+}
+@keyframes CS_cubeHorizontalCenterToLeft {
+  from { transform: translate3d(    0%, 0, 0) rotateY(     0);
+         transform-origin: right;
+         z-index: 20;
+       }
+  to   { transform: translate3d( -100%, 0, 0) rotateY(-90deg);
+         transform-origin: right;
+         z-index: 10;
+       }
+}
+@keyframes CS_cubeHorizontalRightToCenter {
+  from { transform: translate3d( +100%, 0, 0) rotateY(+90deg);
+         transform-origin: left;
+         z-index: 10;
+       }
+  to   { transform: translate3d(    0%, 0, 0) rotateY(     0);
+         transform-origin: left;
+         z-index: 20;
+       }
+}
+@keyframes CS_cubeHorizontalCenterToRight {
+  from { transform: translate3d(    0%, 0, 0) rotateY(     0);
+         transform-origin: left;
+         z-index: 20;
+       }
+  to   { transform: translate3d( +100%, 0, 0) rotateY(+90deg);
+         transform-origin: left;
+         z-index: 10;
+       }
+}
+@keyframes CS_cubeHorizontalLeftToCenter {
+  from { transform: translate3d( -100%, 0, 0) rotateY(-90deg);
+         transform-origin: right;
+         z-index: 10;
+       }
+  to   { transform: translate3d(    0%, 0, 0) rotateY(     0);
+         transform-origin: right;
+         z-index: 20;
+       }
+}
+
+
+/* cube.vertical mode */
+.CS_slideshow.cube.vertical .slide.centerToLeftOrTop {
+  animation-name: CS_cubeVerticalCenterToTop;
+}
+.CS_slideshow.cube.vertical .slide.rightOrBottomToCenter {
+  animation-name: CS_cubeVerticalBottomToCenter;
+}
+.CS_slideshow.cube.vertical .slide.centerToRightOrBottom {
+  animation-name: CS_cubeVerticalCenterToBottom;
+}
+.CS_slideshow.cube.vertical .slide.leftOrTopToCenter {
+  animation-name: CS_cubeVerticalTopToCenter;
+}
+@keyframes CS_cubeVerticalCenterToTop {
+  from { transform: translate3d(0,    0%, 0) rotateX(     0);
+         transform-origin: bottom;
+         z-index: 20;
+       }
+  to   { transform: translate3d(0, -100%, 0) rotateX(+90deg);
+         transform-origin: bottom;
+         z-index: 10;
+       }
+}
+@keyframes CS_cubeVerticalBottomToCenter {
+  from { transform: translate3d(0, +100%, 0) rotateX(-90deg);
+         transform-origin: top;
+         z-index: 10;
+       }
+  to   { transform: translate3d(0,    0%, 0) rotateX(     0);
+         transform-origin: top;
+         z-index: 20;
+       }
+}
+@keyframes CS_cubeVerticalCenterToBottom {
+  from { transform: translate3d(0,    0%, 0) rotateX(     0);
+         transform-origin: top;
+         z-index: 20;
+       }
+  to   { transform: translate3d(0, +100%, 0) rotateX(-90deg);
+         transform-origin: top;
+         z-index: 10;
+       }
+}
+@keyframes CS_cubeVerticalTopToCenter {
+  from { transform: translate3d(0, -100%, 0) rotateX(+90deg);
+         transform-origin: bottom;
+         z-index: 10;
+       }
+  to   { transform: translate3d(0,    0%, 0) rotateX(     0);
+         transform-origin: bottom;
+         z-index: 20;
+       }
+}
+
+
+/* book.horizontal mode */
+.CS_slideshow.book.horizontal .slide {
+  border-right: 3px dotted gray;
+  transform-origin: right;
+}
+.CS_slideshow.book.horizontal .slide.centerToLeftOrTop {
+}
+.CS_slideshow.book.horizontal .slide.rightOrBottomToCenter {
+  animation-name: CS_bookHorizontalRightToCenter;
+}
+.CS_slideshow.book.horizontal .slide.centerToRightOrBottom {
+  animation-name: CS_bookHorizontalCenterToRightOrBottom;
+}
+.CS_slideshow.book.horizontal .slide.leftOrTopToCenter {
+}
+@keyframes CS_bookHorizontalRightToCenter {
+  0%   { transform: rotateY(-90deg);
+         opacity: 0;
+       }
+  50%  { transform: rotateY(-180deg);
+         opacity: 1;
+       }
+  51%  { transform: rotateY(180deg);
+       }
+  to   { transform: rotateY(0deg);
+       }
+}
+@keyframes CS_bookHorizontalCenterToRightOrBottom {
+  0%   { transform: rotateY(0deg);
+         z-index: 20;
+         opacity: 1;
+       }
+  50%  { transform: rotateY(+180deg);
+       }
+  51%  { transform: rotateY(-180deg);
+         opacity: 1;
+       }
+  to   { transform: rotateY(-90deg);
+         opacity: 0;
+         z-index: 10;
+       }
+}
+
+
+/* book.vertical mode */
+.CS_slideshow.book.vertical .slide {
+  border-top: 3px dotted gray;
+  transform-origin: top;
+}
+.CS_slideshow.book.vertical .slide.centerToLeftOrTop {
+}
+.CS_slideshow.book.vertical .slide.rightOrBottomToCenter {
+  animation-name: CS_bookVerticalRightToCenter;
+}
+.CS_slideshow.book.vertical .slide.centerToRightOrBottom {
+  animation-name: CS_bookVerticalCenterToRightOrBottom;
+}
+.CS_slideshow.book.vertical .slide.leftOrTopToCenter {
+}
+@keyframes CS_bookVerticalRightToCenter {
+  0%   { transform: rotateX(-90deg);
+         opacity: 0;
+       }
+  50%  { transform: rotateX(-180deg);
+         opacity: 1;
+       }
+  51%  { transform: rotateX(180deg);
+       }
+  to   { transform: rotateX(0deg);
+       }
+}
+@keyframes CS_bookVerticalCenterToRightOrBottom {
+  0%   { transform: rotateX(0deg);
+         z-index: 20;
+         opacity: 1;
+       }
+  50%  { transform: rotateX(+180deg);
+         transform-origin: top;       }
+  51%  { transform: rotateX(-180deg);
+         opacity: 1;
+       }
+  to   { transform: rotateX(-90deg);
+         opacity: 0;
+         z-index: 10;
+       }
+}
+
+
+/* page.horizontal mode */
+.CS_slideshow.page.horizontal .slide.centerToLeftOrTop {
+  z-index: 10;
+}
+.CS_slideshow.page.horizontal .slide.rightOrBottomToCenter {
+  animation-name: CS_pageHorizontalRightToCenter;
+}
+.CS_slideshow.page.horizontal .slide.centerToRightOrBottom {
+  z-index: 10;
+}
+.CS_slideshow.page.horizontal .slide.leftOrTopToCenter {
+  animation-name: CS_pageHorizontalLeftToCenter;
+}
+@keyframes CS_pageHorizontalRightToCenter {
+  from { transform: translate3d( +100%, 0, 0) rotateY(-90deg);
+         transform-origin: left;
+         z-index: 20;
+       }
+  to   { transform: translate3d(    0%, 0, 0) rotateY(     0);
+         transform-origin: left;
+         z-index: 20;
+       }
+}
+@keyframes CS_pageHorizontalLeftToCenter {
+  from { transform: translate3d( -100%, 0, 0) rotateY(+90deg);
+         transform-origin: right;
+         z-index: 20;
+       }
+  to   { transform: translate3d(    0%, 0, 0) rotateY(     0);
+         transform-origin: right;
+         z-index: 20;
+       }
+}
+
+
+/* page.vertical mode */
+.CS_slideshow.page.vertical .slide.centerToLeftOrTop {
+  z-index: 10;
+}
+.CS_slideshow.page.vertical .slide.rightOrBottomToCenter {
+  animation-name: CS_pageVerticalBottomToCenter;
+}
+.CS_slideshow.page.vertical .slide.centerToRightOrBottom {
+  z-index: 10;
+}
+.CS_slideshow.page.vertical .slide.leftOrTopToCenter {
+  animation-name: CS_pageVerticalTopToCenter;
+}
+@keyframes CS_pageVerticalBottomToCenter {
+  from { transform: translate3d(0, +100%, 0) rotateX(+90deg);
+         transform-origin: top;
+         z-index: 20;
+       }
+  to   { transform: translate3d(0,    0%, 0) rotateX(     0);
+         transform-origin: top;
+         z-index: 20;
+       }
+}
+@keyframes CS_pageVerticalTopToCenter {
+  from { transform: translate3d(0, -100%, 0) rotateX(-90deg);
+         transform-origin: bottom;
+         z-index: 20;
+       }
+  to   { transform: translate3d(0,    0%, 0) rotateX(     0);
+         transform-origin: bottom;
+         z-index: 20;
+       }
+}
+
+
+/* flip mode */
+
+.CS_slideshow.flip .slide {
+  transform-origin: center;
+}
+
+/* flip.horizontal mode */
+.CS_slideshow.flip.horizontal .slide.centerToLeftOrTop {
+  animation-name: CS_flipHorizontalCenterToLeft;
+}
+.CS_slideshow.flip.horizontal .slide.rightOrBottomToCenter {
+  animation-name: CS_flipHorizontalRightToCenter;
+}
+.CS_slideshow.flip.horizontal .slide.centerToRightOrBottom {
+  animation-name: CS_flipHorizontalCenterToRight;
+}
+.CS_slideshow.flip.horizontal .slide.leftOrTopToCenter {
+  animation-name: CS_flipHorizontalLeftToCenter;
+}
+@keyframes CS_flipHorizontalCenterToLeft {
+  from { transform: rotateY(0deg);
+         z-index: 20;
+       }
+  to   { transform: rotateY(180deg);
+         z-index: 10;
+       }
+}
+@keyframes CS_flipHorizontalRightToCenter {
+  from { transform: rotateY(-180deg);
+         z-index: 10;
+       }
+  to   { transform: rotateY(0deg);
+         z-index: 20;
+       }
+}
+@keyframes CS_flipHorizontalCenterToRight {
+  from { transform: rotateY(0deg);
+         z-index: 20;
+       }
+  to   { transform: rotateY(-180deg);
+         z-index: 10;
+       }
+}
+@keyframes CS_flipHorizontalLeftToCenter {
+  from { transform: rotateY(+180deg);
+         z-index: 10;
+       }
+  to   { transform: rotateY(0deg);
+         z-index: 20;
+       }
+}
+
+
+/* flip.vertical mode */
+.CS_slideshow.flip.vertical .slide.centerToLeftOrTop {
+  animation-name: CS_flipVerticalCenterToTop;
+}
+.CS_slideshow.flip.vertical .slide.rightOrBottomToCenter {
+  animation-name: CS_flipVerticalBottomToCenter;
+}
+.CS_slideshow.flip.vertical .slide.centerToRightOrBottom {
+  animation-name: CS_flipVerticalCenterToBottom;
+}
+.CS_slideshow.flip.vertical .slide.leftOrTopToCenter {
+  animation-name: CS_flipVerticalTopToCenter;
+}
+@keyframes CS_flipVerticalCenterToTop {
+  from { transform: rotateX(0deg);
+         z-index: 20;
+       }
+  to   { transform: rotateX(180deg);
+         z-index: 10;
+       }
+}
+@keyframes CS_flipVerticalBottomToCenter {
+  from { transform: rotateX(-180deg);
+         z-index: 10;
+       }
+  to   { transform: rotateX(0deg);
+         z-index: 20;
+       }
+}
+@keyframes CS_flipVerticalCenterToBottom {
+  from { transform: rotateX(0deg);
+         z-index: 20;
+       }
+  to   { transform: rotateX(-180deg);
+         z-index: 10;
+       }
+}
+@keyframes CS_flipVerticalTopToCenter {
+  from { transform: rotateX(+180deg);
+         z-index: 10;
+       }
+  to   { transform: rotateX(0deg);
+         z-index: 20;
+       }
+}

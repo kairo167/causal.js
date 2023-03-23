@@ -1,0 +1,138 @@
+/*                                                                  */
+/*                       C l a r i 3 D  (r)                         */
+/*                                                                  */
+/*                    The ultimate 3D Explorer                      */
+/*                        www.clari3d.com                           */
+/*                                                                  */
+/*           (c) Copyright 2002 to 2021, by Andéor, SAS             */
+/*                      All rights reserved                         */
+/*                                                                  */
+/*                         Andéor, SAS                              */
+/*             SIRET 520 295 643 00024, R.C.S Antibes               */
+/*                        Le Cros d'Azur                            */
+/*                    26 bis avenue des Mimosas                     */
+/*               06800 - Le Cros de Cagnes - France                 */
+/*                                                                  */
+/* This document is the property of  Andéor, SAS.  It is considered */
+/* confidential and proprietary.  This  document may not  be repro- */
+/* duced  or  transmitted in  any form in whole or in part, without */
+/* the express written permission of Andéor, SAS.                   */
+/*                                                                  */
+/* -*-header-*- */
+html, body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+.header {
+    background-color: #555555;
+    color: white;
+    height: 3em;
+}
+.menu {
+    float: left;
+    background-color: #bbbbbb;
+    height: 2em;
+}
+.main-menu-item {
+    color: black;
+}
+.main-menu-item:hover {
+    color: blue;
+}
+.menu-item {
+    color: black;
+    background-color: white;
+}
+.menu-item:hover {
+    color: blue;
+}
+.sub-menu {
+    padding: 3;
+    margin: 4;
+    border: 1px solid gray;
+}
+.fold {
+    color: #555;
+}
+.fold label.fold,
+.fold > label {
+    cursor: pointer;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 5px;
+}
+.fold div.fold,
+.fold > div {
+    padding: 10px;
+    width: 90%;
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s linear;
+    transition: all 0.3s linear;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+}
+.toolbar {
+    background-color: #dddddd;
+    padding:5px;
+}
+.toolbar div div img {
+    width:  20px;
+    height: 20px;
+}
+body > .content {
+    height: 80%;
+    height: -webkit-calc(100% - 3em - 2em - 3em - 1em - 1.2em);
+    height: -moz-calc(100%    - 3em - 2em - 3em - 1em - 1.2em);
+    height: -ms-calc(100%     - 3em - 2em - 3em - 1em - 1.2em);
+    height: -o-calc(100%      - 3em - 2em - 3em - 1em - 1.2em);
+    height: calc(100%         - 3em - 2em - 3em - 1em - 1.2em);
+    width: -webkit-calc(100% - 1px);
+    width: -moz-calc(100%    - 1px);
+    width: -ms-calc(100%     - 1px);
+    width: -o-calc(100%      - 1px);
+    width: calc(100%         - 1px);
+    overflow: auto;
+    display: table;
+}
+.split .left {
+    width:35%;
+}
+.grid {
+    background-color: #eee;
+    padding: 0;
+    border-radius: 0.5em;
+    -moz-border-radius: 1px;
+    -webkit-border-radius:0.5em;
+    -khtml-border-radius:0.5em;
+}
+.grid div {
+    padding: 0.5em;
+    border-radius: 0.5em;
+    -moz-border-radius: 1px;
+    -webkit-border-radius:0.5em;
+    -khtml-border-radius:0.5em;
+}
+.grid div div {
+    text-align: center;
+    border-radius: 0.5em;
+    -moz-border-radius: 1px;
+    -webkit-border-radius:0.5em;
+    -khtml-border-radius:0.5em;
+    background-color: #ccc;
+}
+.status {
+    width: 100%;
+    background-color: red;
+}
+.footer {
+    height: 1em;
+    background-color: #555555;
+    margin-right: 0;
+}
+.copyright {
+    color: white;
+    float: right;
+}

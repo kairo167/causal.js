@@ -1,0 +1,107 @@
+<!--                                                                  -->
+<!--                       C l a r i 3 D  (r)                         -->
+<!--                                                                  -->
+<!--                    The ultimate 3D Explorer                      -->
+<!--                        www.clari3d.com                           -->
+<!--                                                                  -->
+<!-- (c) Copyright 2002 to 2018, by Andéor, SAS - All rights reserved -->
+<!--                                                                  -->
+<!--         Andéor, SAS - SIRET 520 295 643 00016. R.C.S Nice        -->
+<!--  Le Sonora B. 71, avenue de la Lanterne - 06200 - Nice - FRANCE  -->
+<!--                                                                  -->
+<!-- This document is the property of  Andéor, SAS.  It is considered -->
+<!-- confidential and proprietary.  This  document may not  be repro- -->
+<!-- duced  or  transmitted in  any form in whole or in part, without -->
+<!-- the express written permission of Andéor, SAS.                   -->
+<!--                                                                  -->
+<!-- -*-header-*- -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Dialog</title>
+    <link rel="stylesheet" type="text/css" href="../causal.css" />
+    <script type="text/javascript" src="../causal.js"></script>
+    <script type="text/javascript">
+      function show (id) {
+        document.getElementById (id).style.visibility = 'visible';
+      }
+      function hide (id) {
+        document.getElementById (id).style.visibility = 'hidden';
+      }
+      function update_range (id, value, postfix) {
+        var auto_refresh_value = document.getElementById (id);
+        auto_refresh_value.innerHTML = value + postfix;
+      }
+    </script>
+  </head>
+  <body>
+    <input type="button" name="toto" value="open" onclick="show ('dialog');"/>
+    <div id="dialog" style="visibility: hidden;">
+      <div class="CS_overlay">
+      </div>
+      <div class="CS_dialog">
+	<span class="CS_boxclose" id="boxclose" onclick="hide ('dialog');">
+	  &times;
+	</span>
+	<div class="CS_dialog_contents">
+	  <form method="post" 
+		onsubmit="alert ('submit'); hide ('dialog'); return false;">
+	    <table>
+	      <tr>
+		<th colspan="4">
+		  Log settings
+		</th>
+	      </tr>
+	      <tr>
+		<td>
+		  <label>
+		    Auto refresh
+		  </label>
+		</td>
+		<td>
+		  <input id="auto-refresh" type="range" name="Auto Refresh" 
+			 min="0" max="30000" step="50" 
+			 onchange="update_range ('auto-refresh-value', this.value, '&nbsp;ms');"
+			 value="123">
+		</td>
+		<td id="auto-refresh-value">
+		  444ms
+		</td>
+		<td>
+		  Allow the log page to be automaticaly refreshed. 0 value disables
+		  auto-refresh.
+		</td>
+	      </tr>
+	      <tr>
+		<td>
+		  <label>
+		    Number of lines
+		  </label>
+		</td>
+		<td>
+		  <input id="lines" type="range" name="Lines" 
+			 min="0" max="2000" step="50" 
+			 onchange="update_range ('lines-value', this.value, '&nbsp;lines');"
+			 value="123">
+		</td>
+		<td id="lines-value">
+		  100&nbsp;lines
+		</td>
+		<td>
+		  Number of lines to display per page. A 0 value means to display
+		  all the lines.
+		</td>
+	      </tr>
+	      <tr align="center">
+		<td colspan="4">
+		  <input type="submit" value="ok" />
+		</td>
+	      </tr>
+	    </table>
+	  </form>
+	</div>
+      </div>
+    </div>
+  </body>
+</html>
