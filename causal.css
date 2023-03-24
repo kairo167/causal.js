@@ -99,16 +99,16 @@
 }
 
 .CS_tree .CS_item .CS_nochild::before {
-    content: "\0025BC ";
+  content: '\0025BC ';
     visibility: hidden;
 }
 
 .CS_tree .CS_item .CS_expanded::before {
-    content: "\0025BC ";
+  content: '\0025BC ';
 }
 
 .CS_tree .CS_item .CS_collapsed::before {
-    content: "\0025BA ";
+  content: '\0025BA ';
 }
 
 .CS_split {
@@ -340,12 +340,13 @@
 }
 
 .CS_menu ul li.CS_level-2.CS_submenu::after,
+.CS_popmenu li.CS_level-1.CS_submenu::after,
 .CS_popmenu li.CS_level-2.CS_submenu::after,
 .CS_menu ul li.CS_level-3.CS_submenu::after,
 .CS_popmenu li.CS_level-3.CS_submenu::after,
 .CS_menu ul li.CS_level-4.CS_submenu::after,
 .CS_popmenu li.CS_level-4.CS_submenu::after {
-    content: "▶";
+  content: '▶';
     position: absolute;
     top: 50%;
     right: 0;
@@ -699,11 +700,14 @@
     pointer-events: none;
 }
 
-details.CS_details_opened {}
+details.CS_details_opened {
+}
 
-details.CS_details_closed {}
+details.CS_details_closed {
+}
 
-details.CS_details_opened * {}
+details.CS_details_opened * {
+}
 
 details.CS_details_closed * {
     display: none;
@@ -718,11 +722,11 @@ details.CS_details_closed summary {
 }
 
 details.CS_details_opened summary::before {
-    content: "▼ ";
+  content: '▼ ';
 }
 
 details.CS_details_closed summary::before {
-    content: "► ";
+  content: '► ';
 }
 
 .CS_upload {

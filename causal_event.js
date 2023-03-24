@@ -201,6 +201,7 @@ function CS_install_mouse_stop_handler (obj, fn, capture, passive) {
       obj.mousestop.time  = CS_now();
       obj.mousestop.event = event;
     };
+
     CS_add_event (obj, "mousemove", obj.mousestop.mousemove, capture, passive);
     CS_add_event (obj, "touchmove", obj.mousestop.mousemove, capture, passive);
   }

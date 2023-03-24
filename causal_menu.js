@@ -47,7 +47,7 @@ function CS_close_menu (elem) {
     elem.style.display = "none";
     setTimeout (function() {
       elem.style.display = null;
-    }, 500);
+      }, 250);
   }
     CS_close_menu (elem.parentNode);
   }
@@ -214,7 +214,7 @@ function CS_bind_menu (elem, onclose, level) {
   }
 }
 
-function menu (html, onclose, location) {
+function CS_menu(html, onclose, location) {
   let menu = document.createElement ("div");
   CS_add_class (menu, "CS_popmenu");
   menu.innerHTML = html;
@@ -240,7 +240,9 @@ function menu (html, onclose, location) {
 
   CS_bind_menu (menu, function (item) {
     if (onclose) {
-      onclose();
+      if (! onclose (item)) {
+        return;
+      }
     }
     menu.parentNode.removeChild (menu);
   });
