@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="25" height="25" viewBox="0, 0, 25, 25">
+  <g id="Calque_1">
+    <path d="M12.875,2.5 L23.375,20.875 L1.625,20.75 L12.875,2.5 z" fill-opacity="0" stroke="#FF9300" stroke-width="1" display="none"/>
+    <g>
+      <path d="M12.5,2 C18.299,2 23,6.701 23,12.5 C23,18.299 18.299,23 12.5,23 C6.701,23 2,18.299 2,12.5 C2,6.701 6.701,2 12.5,2 z M12.5,4 C7.806,4 4,7.806 4,12.5 C4,17.194 7.806,21 12.5,21 C17.194,21 21,17.194 21,12.5 C21,7.806 17.194,4 12.5,4 z" fill="#017DFF"/>
+      <path d="M12.25,8.5 C11.56,8.5 11,7.94 11,7.25 C11,6.56 11.56,6 12.25,6 C12.94,6 13.5,6.56 13.5,7.25 C13.5,7.94 12.94,8.5 12.25,8.5 z" fill="#1488FB"/>
+      <path d="M11.45,18.226 L10.4,19.05 L14.6,19.05 L13.55,18.226 L13.55,10 L10.4,10 L11.45,11.05" fill="#017DFF"/>
+    </g>
+  </g>
+</svg>

@@ -26,41 +26,44 @@
  * @return void.
  */
 /** @export */
-function CS_notify (element, type) {
+function CS_notify(element, type) {
   // check the type
   switch (type) {
-    case "error": case "success": case "warning":
+    case "error":
+    case "success":
+    case "warning":
+    case "info":
       break;
 
     default:
-      alert ('Error in causal_notify.js(32): ',
-             'invalid notification type "', type, '"');
+      alert('Error in causal_notify.js(32): ',
+        'invalid notification type "', type, '"');
       return;
   }
 
   // remove all the previous notifications
-	let elems = document.getElementsByClassName ("CS_notify");
-	for (let i = 0; i < elems.length; i++) {
-	  elems[i].parentNode.removeChild (elems[i]);
-	}
+  let elems = document.getElementsByClassName("CS_notify");
+  for (let i = 0; i < elems.length; i++) {
+    elems[i].parentNode.removeChild(elems[i]);
+  }
 
   // create the notification container
-  let div = document.createElement ("div");
-  CS_add_class (div, "CS_notify");
+  let div = document.createElement("div");
+  CS_add_class(div, "CS_notify");
 
   // set it invisible
   div.style.opacity = 0;
 
   // append the content
   if (typeof element == "string") {
-	  div.innerHTML = element;
+    div.innerHTML = element;
   }
   else {
-	  div.appendChild (element);
+    div.appendChild(element);
   }
 
   // default type
-  if (! type) {
+  if (!type) {
     type = "success";
   }
 
@@ -69,33 +72,33 @@ function CS_notify (element, type) {
     let child = div.children[i];
 
     // if a child is a nofification, remove its type
-    if (CS_has_class (child, "CS_notify")) {
-      for (let i = 0, types = ["error", "success", "warning"];
-           i < types.length;
-           i++) {
-        if (CS_has_class (child, "CS_" + types[i])) {
+    if (CS_has_class(child, "CS_notify")) {
+      for (let i = 0, types = ["info", "error", "success", "warning"];
+        i < types.length;
+        i++) {
+        if (CS_has_class(child, "CS_" + types[i])) {
           type = types[i];
-          CS_del_class (child, "CS_" + types[i]);
+          CS_del_class(child, "CS_" + types[i]);
         }
       }
-      CS_del_class (child, "CS_notify");
+      CS_del_class(child, "CS_notify");
     }
   }
 
   // set the class of the container
-  CS_add_class (div, "CS_" + type);
+  CS_add_class(div, "CS_" + type);
 
   // close the notification
   function close() {
-    CS_del_event (document.body, "mousedown", close, true);
-    CS_del_event (document.body, "mousemove", close, true);
-    CS_del_event (document.body, "keydown",   close, true);
+    CS_del_event(document.body, "mousedown", close, true);
+    CS_del_event(document.body, "mousemove", close, true);
+    CS_del_event(document.body, "keydown", close, true);
     div.style.opacity = 0;
-    CS_alarm (5000, function() {
+    CS_alarm(5000, function () {
       try {
-        document.body.removeChild (div);
+        document.body.removeChild(div);
       }
-	    catch (e){
+      catch (e) {
       }
     });
   }
@@ -103,21 +106,21 @@ function CS_notify (element, type) {
   // on mobile device, hide the notification after some time because
   // there is no mousemove events
   switch (CS_get_os()) {
-  case "ios": case "android":
-    CS_alarm (3000, close);
+    case "ios": case "android":
+      CS_alarm(3000, close);
 
-  default:
-    // set the new event handler after a while
-    CS_alarm (800,
-              function() {
-                CS_add_event (document.body, "mousedown", close, true);
-                CS_add_event (document.body, "mousemove", close, true);
-                CS_add_event (document.body, "keydown",   close, true);
-              });
-    break;
+    default:
+      // set the new event handler after a while
+      CS_alarm(800,
+        function () {
+          CS_add_event(document.body, "mousedown", close, true);
+          CS_add_event(document.body, "mousemove", close, true);
+          CS_add_event(document.body, "keydown", close, true);
+        });
+      break;
   }
 
   // add the notification in the document and set it visible
-  document.body.appendChild (div);
+  document.body.appendChild(div);
   div.style.opacity = 1;
 }
