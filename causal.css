@@ -124,6 +124,8 @@
 .CS_stack .CS_stacked {
   overflow: auto;
   flex-grow: 1;
+  flex-shrink: 1;
+  width: 100%;
 }
 
 .CS_stack.CS_vertical {

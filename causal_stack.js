@@ -57,40 +57,101 @@ function CS_bind_stack(stack) {
     }
   }
 
+  /*! Onright button pressed callback.
+   * @param envent the event.
+   */
   function onright(event) {
     // get the child element
     let child = stack.children[event.target.stacked];
     let next_child = stack.children[event.target.stacked + 2];
 
+    // if there is previous size stored
     if (child.stacked_size) {
+      // restore it
       set_size(child, child.stacked_size);
-      delete child.stacked_size;
-    }
-    else {
-      child.stacked_size = get_size(child);
-      set_size(child, 0);
-      set_size(next_child, get_size(next_child) + child.stacked_size);
-    }
-  }
+      set_size(next_child, next_child.stacked_size);
 
-  function onleft(event) {
-    // get the child element
-    let child = stack.children[event.target.stacked];
-    let next_child = stack.children[event.target.stacked + 2];
-
-    if (child.stacked_size) {
-      set_size(child, child.stacked_size);
+      // delete the stored sizes
       delete child.stacked_size;
+      delete next_child.stacked_size;
     }
     else {
       // get the child size and save it, and the next child size
       child.stacked_size = get_size(child);
-      let next_size = get_size(next_child) + child.stacked_size;
+      next_child.stacked_size = get_size(next_child);
 
-      // set the sizes
-      set_size(child, 0);
-      set_size(next_child, next_size);
+      // maximize this child and minimize the next child
+      set_size(child, child.stacked_size + next_child.stacked_size);
+      set_size(next_child, 0);
     }
+  }
+
+  /*! Onleft button pressed callback.
+   * @param envent the event.
+   */
+  function onleft(event) {
+    // get the child elements
+    let child = stack.children[event.target.stacked];
+    let next_child = stack.children[event.target.stacked + 2];
+
+    // if there is previous size stored
+    if (child.stacked_size) {
+      // restore it
+      set_size(child, child.stacked_size);
+      set_size(next_child, next_child.stacked_size);
+      
+      // delete the stored sizes
+      delete child.stacked_size;
+      delete next_child.stacked_size;
+    }
+    else {
+      // get the child size and save it, and the next child size
+      child.stacked_size = get_size(child);
+      next_child.stacked_size = get_size(next_child);
+
+      // minimize this child and maximize the next child
+      set_size(child, 0);
+      set_size(next_child, next_child.stacked_size + child.stacked_size);
+    }
+  }
+
+  /*! Gripper mouse down callback.
+   * @param envent the event.
+   */
+  function start_drag(event) {
+    // get the child element
+    let child = stack.children[event.target.stacked];
+    let next_child = stack.children[event.target.stacked + 2];
+
+    let size, next_size;
+    CS_drag(
+      window,
+
+      // onstart
+      (mouse) => {
+        console.log('start drag');
+        size = get_size(child);
+        next_size = get_size(next_child);
+        
+        delete child.stacked_size;
+        delete next_child.stacked_size;
+        
+        return true;
+      },
+
+      //ondrag,
+      (start, delta) => {
+        console.log('dragging');
+        set_size(child, size + (vertical ? delta.y : delta.x));
+        set_size(next_child, next_size - (vertical ? delta.y : delta.x));
+        return true;
+      },
+
+      //onend
+      (mouse, draged) => {
+        console.log('end dragging');
+      }
+    );
   }
 
   // if the stack is vertical
@@ -138,6 +199,7 @@ function CS_bind_stack(stack) {
       // add the event handlers
       left.onclick = onleft;
       right.onclick = onright;
+      line.onmousedown = gripper.onmousedown = start_drag;
 
       // insert the separator before the next child
       stack.insertBefore(line, stack.children[i + 1]);
@@ -145,11 +207,11 @@ function CS_bind_stack(stack) {
   }
 
   // for all the stack children
-  if (0) for (let i = 0; i < stack.children.length; i += 2) {
+  for (let i = 0; i < stack.children.length; i += 2) {
     // get the children
     let child = stack.children[i];
 
     // set its stacked size
-    child.stacked_size = get_size(child);
+    set_size(child, get_size(child));
   }
 }
