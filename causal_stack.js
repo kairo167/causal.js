@@ -99,7 +99,7 @@ function CS_bind_stack(stack) {
       // restore it
       set_size(child, child.stacked_size);
       set_size(next_child, next_child.stacked_size);
-      
+
       // delete the stored sizes
       delete child.stacked_size;
       delete next_child.stacked_size;
@@ -132,10 +132,10 @@ function CS_bind_stack(stack) {
         console.log('start drag');
         size = get_size(child);
         next_size = get_size(next_child);
-        
+
         delete child.stacked_size;
         delete next_child.stacked_size;
-        
+
         return true;
       },
 
@@ -154,8 +154,47 @@ function CS_bind_stack(stack) {
     );
   }
 
+  /*! Create a separator.
+   * @param index the new child index,
+   * @return DOM returns the separator DOM element.
+   */
+  function create_separator(index) {
+    // create the separator elements
+    let line = document.createElement('div');
+    let gripper = document.createElement('div');
+    let left = document.createElement('div');
+    let right = document.createElement('div');
+
+    // add the class to the separator element
+    CS_add_class(line, 'CS_line');
+    CS_add_class(gripper, 'CS_gripper');
+    CS_add_class(left, 'CS_left');
+    CS_add_class(right, 'CS_right');
+
+    // add the child index
+    line.stacked = gripper.stacked = left.stacked = right.stacked = index;
+
+    // set the titles
+    line.title = gripper.title = 'resize the stack view';
+    left.title = vertical ? ___('Move left') : ___('Move left');
+    right.title = vertical ? ___('Move right') : ___('Move right');
+
+    // make the hierarchy
+    gripper.appendChild(left);
+    gripper.appendChild(right);
+    line.appendChild(gripper);
+
+    // add the event handlers
+    left.onclick = onleft;
+    right.onclick = onright;
+    line.onmousedown = gripper.onmousedown = start_drag;
+
+    return line;
+  }
+
   // if the stack is vertical
-  if (stack.attributes.vertical && stack.attributes.vertical.value == 'true') {
+  if (stack.attributes.vertical &&
+    stack.attributes.vertical.value == 'true') {
     // add the corresponding class
     CS_add_class(stack, 'CS_vertical');
     vertical = true;
@@ -171,38 +210,11 @@ function CS_bind_stack(stack) {
 
     // if there is a child after, insert a separator
     if (i < stack.children.length - 1) {
-      // create the separator elements
-      let line = document.createElement('div');
-      let gripper = document.createElement('div');
-      let left = document.createElement('div');
-      let right = document.createElement('div');
-
-      // add the class to the separator element
-      CS_add_class(line, 'CS_line');
-      CS_add_class(gripper, 'CS_gripper');
-      CS_add_class(left, 'CS_left');
-      CS_add_class(right, 'CS_right');
-
-      // add the child index
-      line.stacked = gripper.stacked = left.stacked = right.stacked = i;
-
-      // set the titles
-      line.title = gripper.title = 'resize the stack view';
-      left.title = vertical ? ___('Move left') : ___('Move left');
-      right.title = vertical ? ___('Move right') : ___('Move right');
-
-      // make the hierarchy
-      gripper.appendChild(left);
-      gripper.appendChild(right);
-      line.appendChild(gripper);
-
-      // add the event handlers
-      left.onclick = onleft;
-      right.onclick = onright;
-      line.onmousedown = gripper.onmousedown = start_drag;
+      // create a separator
+      let separator = create_separator(i);
 
       // insert the separator before the next child
-      stack.insertBefore(line, stack.children[i + 1]);
+      stack.insertBefore(separator, stack.children[i + 1]);
     }
   }
 
@@ -214,4 +226,126 @@ function CS_bind_stack(stack) {
     // set its stacked size
     set_size(child, get_size(child));
   }
+
+  // exported methods
+
+  /*! View only one child of restore all the children.
+   * @param child the optional child to view.
+   */
+  stack.view = function (child) {
+    // view only one child
+    if (child) {
+      // for all the stack children, keep their actual size
+      for (let i = 0; i < stack.children.length; i += 2) {
+        // get the children
+        let this_child = stack.children[i];
+
+        // set its stacked size
+        this_child.stacked_size = get_size(this_child);
+      }
+
+      // hide all children but child
+      for (let i = 0; i < stack.children.length; i += 1) {
+        // get the children
+        let this_child = stack.children[i];
+
+        // hide it if not child
+        if (this_child != child) {
+          CS_add_class(this_child, 'CS_hidden');
+        }
+      }
+    }
+
+    // restore from view
+    else {
+      // show all children
+      for (let i = 0; i < stack.children.length; i += 1) {
+        // get the children
+        let this_child = stack.children[i];
+
+        // show it
+        CS_del_class(this_child, 'CS_hidden');
+
+        // restore its size
+        if (typeof this_child.stacked_size != 'undefined') {
+          set_size(this_child, this_child.stacked_size);
+        }
+      }
+    }
+  };
+
+  /*! Adds a child.
+   * @param child the child to add,
+   * @param position optional the position.
+   */
+  stack.add = function (child, position) {
+    // if the position is provided and it it is valid
+    if (typeof position != 'undefined'
+      //         child | child | child
+      // index     0   1   2   3   4
+      // position  0       1       2
+      && position < stack.children.length / 2) {
+      // get the child at the position
+      let next_child = stack.children[position * 2];
+      
+      // create a separator
+      let separator = create_separator(position*2);
+
+      stack.insertBefore(separator, next_child);
+      stack.insertBefore(child, next_child);
+    }
+
+    // otherwise, simply append the new children
+    else {
+      // create a separator
+      let separator = create_separator(stack.children.length);
+
+      // append the separator and the child
+      stack.appendChild(separator);
+      stack.appendChild(child);
+    }
+
+    // add the stacked class
+    CS_add_class(child, 'CS_stacked');
+
+    // set the stacked size of the new child
+    set_size(child, get_size(child));
+  }
+
+  /*! Deletes a child.
+   * @param child the child to delete or its position.
+   */
+  stack.del = function (child_or_position) {
+    let child, position;
+
+    // get the child and its position
+    if (typeof child_or_position == 'number') {
+      position = child_or_position;
+      child = (position < stack.children.length / 2
+        ? stack.children[position * 2]
+        : false);
+    }
+
+    // if the child exists
+    if (child !== false && stack.contains(child)) {
+      //         child | child | child
+      // index     0   1   2   3   4
+      // position  0       1       2
+      let separator = false;
+      if (stack.children.length > 1) {
+        // get the separator before if the child is not the first child
+        // and the separator after the child otherwise
+        separator = stack.children[position * 2 + (position > 0 ? -1 : +1)]
+      }
+
+      // remove the child and the separator
+      stack.removeChild(child);
+      if (separator) {
+        stack.removeChild(separator);
+      }
+
+      // remove the stacked class
+      CS_del_class(child, 'CS_stacked');
+    }
+  };
 }
