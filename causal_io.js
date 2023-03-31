@@ -710,7 +710,7 @@ function CS_get_cookie(name) {
       return c.substring(nameEQ.length, c.length);
     }
   }
-  return null;
+  return name.undefined;
 }
 
 /*! Deletes a cookie if the name is provided, or all the cookies otherwise.
