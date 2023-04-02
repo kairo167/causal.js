@@ -237,7 +237,7 @@ var CS_ajax_error_notified = false;
  * {
  *   args:        the arguments { 'name': 'value, ...} or false,
  *   as_json:     send the data as json  (false by default)
- *   binary:      the data to retreive are binary (false by default),
+ *   binary:      the data to retrieve are binary (false by default),
  *   force:       force the download, bypassing the browser cache
  *                (false by default),
  *   headers:     additional headers as {"name": value, "name": "value", ...},
@@ -458,7 +458,7 @@ function _CS_ajax_load(options) {
  * {
  *   args:        the arguments { 'name': 'value, ...} or false,
  *   as_json:     send the data as json  (false by default)
- *   binary:      the data to retreive are binary (false by default),
+ *   binary:      the data to retrieve are binary (false by default),
  *   force:       force the download, bypassing the browser cache
  *                (false by default),
  *   headers:     additional headers as {"name": value, "name": "value", ...},
