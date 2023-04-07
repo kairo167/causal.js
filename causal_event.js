@@ -680,7 +680,7 @@ function CS_animate_hide(element, duration_ms) {
  * called when the user clicks into the scene to start the drag, with the
  * mouse position, the function returns true to continue dragging or false,
  * @param ondrag: function (mouse_start, mouse_delta) boolean
- * called on dragging with the intial drag mouse position and the delta in
+ * called on dragging with the initial drag mouse position and the delta in
  * the mouse position, the function returns true to continue dragging or
  * false,
  * @param onend: function (mouse, dragged) void
