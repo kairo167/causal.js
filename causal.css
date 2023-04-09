@@ -161,7 +161,7 @@
 .CS_stack .CS_line:hover,
 .CS_stack .CS_line:hover .CS_gripper,
 .CS_stack .CS_gripper:hover {
-  background-color: rgb(0, 153, 249);
+  background-color: rgb(25 142 233);
 }
 
 .CS_stack .CS_line:hover {
