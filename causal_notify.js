@@ -22,23 +22,15 @@
 
 /*! Notify the user with an element of a html content.
  * @param element DOM element or HTML content,
- * @param type type of notification in "error", "success" and "warning",
+ * @param type type of notification in "error", "success" and "warning"
+ * or "info" (by default if not provided),
  * @return void.
  */
 /** @export */
 function CS_notify(element, type) {
   // check the type
-  switch (type) {
-    case "error":
-    case "success":
-    case "warning":
-    case "info":
-      break;
-
-    default:
-      alert('Error in causal_notify.js(32): ',
-        'invalid notification type "', type, '"');
-      return;
+  if (!type) {
+    type = 'info';
   }
 
   // remove all the previous notifications
@@ -71,7 +63,7 @@ function CS_notify(element, type) {
   for (let i = 0; i < div.children.length; i++) {
     let child = div.children[i];
 
-    // if a child is a nofification, remove its type
+    // if a child is a notification, remove its type
     if (CS_has_class(child, "CS_notify")) {
       for (let i = 0, types = ["info", "error", "success", "warning"];
         i < types.length;
