@@ -50,6 +50,9 @@ function CS_notify(element, type) {
   if (typeof element == "string") {
     div.innerHTML = element;
   }
+  else if (typeof element.toString == "function") {
+    div.innerHTML = element.toString();
+  }
   else {
     div.appendChild(element);
   }
