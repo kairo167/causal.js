@@ -22,7 +22,7 @@
 
 /* Return the regular expression for matching a class name.
  * @param name the class name
- * @return regular expresison
+ * @return regular expression
  */
 // /** @export */
 function CS_re_class(name) {
@@ -66,8 +66,8 @@ function CS_del_class(element, name) {
 }
 
 /* allow to know if an element is a descendant of another element in the
- * hierachy.
- * @param parent the suposed parent element
+ * hierarchy.
+ * @param parent the supposed parent element
  * @param child the supposed child element
  * @return boolean
  */
@@ -89,16 +89,17 @@ function CS_is_descendant(parent, child) {
  * given element.
  * @param element the ancestor element,
  * @param id the identifier to search,
- * @param search_in_hierachy if true, search in the whold hierarchy,
+ * @param search_in_hierarchy if true, search in the whole hierarchy,
  * otherwise, search in the direct children; it is false by default,
- * @param uniq if true, return te first matching element,
+ * @param uniq if true, return the first matching element,
  * @return false or array: false if not found or the array of found
  * element.
  */
 /** @export */
-function CS_get_children_by_id(element,
+function CS_get_children_by_id(
+  element,
   id,
-  search_in_hierachy = false,
+  search_in_hierarchy = false,
   uniq = true) {
   // the result
   let res = [];
@@ -129,7 +130,7 @@ function CS_get_children_by_id(element,
       }
 
       // if search in the full hierarchy
-      if (search_in_hierachy) {
+      if (search_in_hierarchy) {
         // search in the child
         search(element.children[c]);
       }
