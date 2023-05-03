@@ -37,9 +37,9 @@
  *                              document
  *   onclose:  called on close
  *   parent:   the parent dom element,
- *   styles:   the optional styles of the dilog as a CSS string or as an object,
+ *   styles:   the optional styles of the dialog as a CSS string or as an object,
  * }
- * @eturn DOM: the dialog.
+ * @return DOM: the dialog.
  */
 /** @export */
 function CS_dialog_open(options) {
@@ -210,7 +210,7 @@ function CS_dialog_open(options) {
           CS_modal_capture(false);
         }
 
-        // unblur on need
+        // un-blur on need
         if (options.blur) {
           CS_blur_all(dialog, 0);
         }
@@ -268,14 +268,14 @@ function CS_dialog_open(options) {
       }
     }
 
-    // at least, if the styles are a srring
+    // at least, if the styles are a string
     else if (typeof options.styles == 'string') {
       // set the CSS
       frame.style.cssText = options.styles;
     }
   }
 
-  // allow move for non modal dialgs
+  // allow move for non modal dialogs
   if (true || !options.modal) {
     frame.style.cursor = "all-scroll";
     frame.onmousedown = function (event) {
@@ -398,7 +398,7 @@ function CS_dialog_close(element) {
 /* open a color picker
  * title: the dialog title,
  * onclose: callback called with the selected color on close
- * onchange: callbak called when the color is selected
+ * onchange: callback called when the color is selected
  * blur: blur the web page if true
  * modal: the modal mode,
  * styles: the dialog styles
