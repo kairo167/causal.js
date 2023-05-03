@@ -28,7 +28,7 @@
  *   class:    additional class name
  *   content:  the html or dom element
  *   close:    'default':  the dialog is closed either with the cross button,
- *                         with a click or a key or programmaticaly
+ *                         with a click or a key or programmatically
  *             'explicit': the dialog is close by the cross button or
  *                         programmatically,
  *             'none'    : the dialog is closable programmatically only,
