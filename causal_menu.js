@@ -25,7 +25,7 @@
  * @return void.
  */
 /** @export */
-function CS_close_menu (elem) {
+function CS_close_menu(elem) {
   // <ul class="CS_level-1">
   //  <li class="CS_submenu CS_level-1">
   //   <a class="CS_level-1">
@@ -40,16 +40,16 @@ function CS_close_menu (elem) {
   //  ...
   // </ul>
   //
-  CS_del_class (elem, "CS_over");
-  if (elem.tagName != 'UL' || ! CS_has_class (elem, "CS_level-1")) {
-  if (elem.tagName.toLowerCase() == "ul") {
-    let visibility = elem.style.visibility;
-    elem.style.display = "none";
-    setTimeout (function() {
-      elem.style.display = null;
+  CS_del_class(elem, "CS_over");
+  if (elem.tagName != 'UL' || !CS_has_class(elem, "CS_level-1")) {
+    if (elem.tagName.toLowerCase() == "ul") {
+      let visibility = elem.style.visibility;
+      elem.style.display = "none";
+      setTimeout(function () {
+        elem.style.display = null;
       }, 250);
-  }
-    CS_close_menu (elem.parentNode);
+    }
+    CS_close_menu(elem.parentNode);
   }
 }
 
@@ -58,10 +58,10 @@ function CS_close_menu (elem) {
  * @return void.
  */
 /** @export */
-function CS_open_menu (elem) {
-  if (elem.tagName != 'UL' || ! CS_has_class (elem, "CS_level-1")) {
-    CS_add_class (elem, "CS_over");
-    CS_open_menu (elem.parentNode);
+function CS_open_menu(elem) {
+  if (elem.tagName != 'UL' || !CS_has_class(elem, "CS_level-1")) {
+    CS_add_class(elem, "CS_over");
+    CS_open_menu(elem.parentNode);
   }
 }
 
@@ -72,7 +72,7 @@ function CS_open_menu (elem) {
  * @return void.
  */
 /** @export */
-function CS_bind_menu (elem, onclose, level) {
+function CS_bind_menu(elem, onclose, level) {
   /*! Onmouseenter callback bound to the li element of the menus.
    * The purpose of this enter/leave management is to prevent to
    * close the menu if the user go out of the menu for a small
@@ -80,27 +80,27 @@ function CS_bind_menu (elem, onclose, level) {
    * @param event the event,
    * @return void.
    */
-  function li_onmouseenter (event) {
-  	// get the li element
+  function li_onmouseenter(event) {
+    // get the li element
     let li = event.target;
 
     // if there is a current leave alarm associated to the li element
     if (li.enter_alarm) {
-  	  // cancel this alarm
-      CS_cancel_alarm (li.enter_alarm);
+      // cancel this alarm
+      CS_cancel_alarm(li.enter_alarm);
       li.enter_alarm = false;
     }
 
     // add the over class
-    CS_add_class (li, 'CS_over');
+    CS_add_class(li, 'CS_over');
   }
 
   /*! Onmouseleave callback bound to the li element of the menus.
    * @param event the event,
    * @return void.
    */
-  function li_onmouseleave (event) {
-  	// get the li element and the target element (where the mouse is on now)
+  function li_onmouseleave(event) {
+    // get the li element and the target element (where the mouse is on now)
     let li = event.target;
     let to = event.toElement;
 
@@ -108,7 +108,7 @@ function CS_bind_menu (elem, onclose, level) {
     function leave() {
       // reset the alarm value and remove the over class
       li.enter_alarm = false;
-      CS_del_class (li, 'CS_over');
+      CS_del_class(li, 'CS_over');
     }
 
     // if there is a target element and if the parents of the
@@ -121,7 +121,7 @@ function CS_bind_menu (elem, onclose, level) {
     // otherwise, leave after a small delay, leting the user the
     // time to reenter in the menu
     else {
-      li.enter_alarm = CS_alarm (500, leave);
+      li.enter_alarm = CS_alarm(500, leave);
     }
   }
 
@@ -131,92 +131,92 @@ function CS_bind_menu (elem, onclose, level) {
 
     for (let x = elem; x; x = x.parentNode) {
       switch (x.tagName.toLowerCase()) {
-        case "li": case "a":            break;
-        case 'ul':           level++;   break;
-        default:             x = false; break;
+        case "li": case "a": break;
+        case 'ul': level++; break;
+        default: x = false; break;
       }
     }
   }
 
   switch (elem.tagName.toLowerCase()) {
-  case "div":
-    break;
+    case "div":
+      break;
 
-  case "li":
-    for (let i = 0; i < elem.children.length; i++) {
-      if (elem.children[i].tagName.toLowerCase() == "ul") {
-	      let child = elem.children[i];
-	      CS_add_class (elem, "CS_submenu");
-	      break;
+    case "li":
+      for (let i = 0; i < elem.children.length; i++) {
+        if (elem.children[i].tagName.toLowerCase() == "ul") {
+          let child = elem.children[i];
+          CS_add_class(elem, "CS_submenu");
+          break;
+        }
       }
-    }
-    elem.onmouseenter = li_onmouseenter;
-    elem.onmouseleave = li_onmouseleave;
-    break;
+      elem.onmouseenter = li_onmouseenter;
+      elem.onmouseleave = li_onmouseleave;
+      break;
 
-  case "a":
-    if (! elem.binded) {
-      elem.org_onclick = elem.onclick;
+    case "a":
+      if (!elem.binded) {
+        elem.org_onclick = elem.onclick;
 
-      elem.onclick = function (event) {
-        CS_stop_propagation (event);
-        if (onclose) {
-          onclose (elem);
-        }
-        if (elem.org_onclick != null) {
-          // on touch event
-          if (event.pointerType == "touch") {
-            // close the menu after a while
-            if (elem.close_alarm) {
-              CS_cancel_alarm (elem.close_alarm);
+        elem.onclick = function (event) {
+          CS_stop_propagation(event);
+          if (onclose) {
+            onclose(elem);
+          }
+          if (elem.org_onclick != null) {
+            // on touch event
+            if (event.pointerType == "touch") {
+              // close the menu after a while
+              if (elem.close_alarm) {
+                CS_cancel_alarm(elem.close_alarm);
+              }
+              elem.close_alarm = CS_alarm(1800, function () {
+                elem.close_alarm = false;
+                CS_close_menu(elem);
+              });
             }
-            elem.close_alarm = CS_alarm (1800, function() {
-              elem.close_alarm = false;
-              CS_close_menu (elem);
-            });
+
+            // call the callback
+            elem.org_onclick(event);
           }
+          else {
+            // on touch screen
+            if (event.pointerType == "touch") {
+              // ensure all the hierachy is opened
+              CS_open_menu(elem);
 
-          // call the callback
-          elem.org_onclick (event);
-        }
-        else {
-          // on touch screen
-          if (event.pointerType == "touch") {
-            // ensure all the hierachy is opened
-            CS_open_menu (elem);
-
-            elem.focus();
+              elem.focus();
+            }
           }
-        }
-      };
+        };
 
-    }
-    break;
+      }
+      break;
   }
 
   if (elem.tagName.toLowerCase() == "ul") {
     level += 1;
   }
 
-  if (CS_has_class (elem, "CS_level-\\d*")) {
+  if (CS_has_class(elem, "CS_level-\\d*")) {
     elem.className =
-      elem.className.replace (/(?:^|\s)CS_level-\d*(?!\S)/g,
-			                        " CS_level-" + level);
+      elem.className.replace(/(?:^|\s)CS_level-\d*(?!\S)/g,
+        " CS_level-" + level);
   }
   else {
-    CS_add_class (elem, "CS_level-" + level);
+    CS_add_class(elem, "CS_level-" + level);
   }
 
   elem.binded = true;
 
   for (let i = 0; i < elem.children.length; i++) {
-    CS_bind_menu (elem.children[i], onclose, level);
+    CS_bind_menu(elem.children[i], onclose, level);
   }
 }
 
 function CS_menu(html, onclose, location) {
-  let menu = document.createElement ("div");
-  CS_add_class (menu, "CS_popmenu");
+  let menu = document.createElement("div");
+  CS_add_class(menu, "CS_popmenu");
   menu.innerHTML = html;
 
   if (location) {
@@ -235,36 +235,37 @@ function CS_menu(html, onclose, location) {
   }
   else {
     menu.style.left = window.event.clientX + "px";
-    menu.style.top  = window.event.clientY + "px";
+    menu.style.top = window.event.clientY + "px";
   }
 
-  CS_bind_menu (menu, function (item) {
+  const onmousedown = function (event) {
+    console.log("Mouse released from menu");
+
+    if (!((event.explicitOriginalTarget &&
+      CS_is_descendant(menu,
+        event.explicitOriginalTarget)) ||
+      (event.srcElement &&
+        CS_is_descendant(menu, event.srcElement)))) {
+      if (onclose) {
+        onclose();
+      }
+      CS_stop_propagation(event);
+      menu.parentNode.removeChild(menu);
+      document.onmousedown = onmousedown;
+    }
+  };
+
+  CS_bind_menu(menu, function (item) {
     if (onclose) {
-      if (! onclose (item)) {
+      if (!onclose(item)) {
         return;
       }
     }
-    menu.parentNode.removeChild (menu);
+    menu.parentNode.removeChild(menu);
+    CS_del_event(document, 'mousedown', onmousedown);
   });
 
-  let onmousedown = document.onmousedown;
-  document.onmousedown =
-    function (event) {
-      console.log ("Mouse released from menu");
+  CS_add_event(document, 'mousedown', onmousedown);
 
-      if (! ((event.explicitOriginalTarget &&
-              CS_is_descendant (menu,
-                                event.explicitOriginalTarget)) ||
-		         (event.srcElement &&
-		          CS_is_descendant (menu, event.srcElement)))) {
-        if (onclose) {
-          onclose();
-        }
-        CS_stop_propagation (event);
-        menu.parentNode.removeChild (menu);
-        document.onmousedown = onmousedown;
-      }
-    };
-
-  document.body.appendChild (menu);
+  document.body.appendChild(menu);
 }
