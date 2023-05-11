@@ -569,7 +569,7 @@
   bottom: 0em;
 }
 
-.CS_dialog .CS_close {
+.CS_close {
   background-image: url(causal_close.svg);
   background-size: 100% auto;
   background-repeat: no-repeat;
@@ -585,7 +585,7 @@
   transform: rotate(0deg);
 }
 
-.CS_dialog .CS_close:hover {
+.CS_close:hover {
   filter: brightness(80%);
   transform: rotate(45deg);
   transition: transform 0.5s;
