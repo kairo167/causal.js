@@ -86,10 +86,8 @@ function CS_dialog_open(options) {
     let org_x = event.clientX;
     let org_y = event.clientY;
     let org_z = frame.style.zindex;
-    let left = frame.offsetLeft;
-    let top = frame.offsetTop;
-    let org_mouseup = document.onmouseup;
-    let org_mousemove = document.onmousemove;
+    let left = frame.clientLeft;
+    let top = frame.clientTop;
 
     console.log("Mouse pressed for move; click=" + org_x + ", " + org_y);
 
@@ -97,25 +95,26 @@ function CS_dialog_open(options) {
 
     frame.style.zindex = 10000;
 
-    document.onmouseup =
-      function (event) {
-        console.log("Mouse released for move");
-        CS_stop_propagation(event);
-        document.onmousemove = org_mousemove;
-        document.onmouseup = org_mouseup;
-        frame.style.zindex = org_z;
-      };
-    document.onmousemove =
-      function (event) {
-        console.log("Mouse moved on move");
-        CS_stop_propagation(event);
+    let onmouseup, onmousemove;
+    onmouseup = event => {
+      console.log("Mouse released for move");
+      CS_stop_propagation(event);
+      CS_del_event(document, 'mouseup', onmouseup);
+      CS_del_event(document, 'mousemove', onmousemove);
+      frame.style.zindex = org_z;
+    };
+    onmousemove = event => {
+      console.log("Mouse moved on move");
+      CS_stop_propagation(event);
 
-        let delta_x = event.clientX - org_x;
-        frame.style.left = (left + delta_x) + "px";
+      let delta_x = event.clientX - org_x;
+      frame.style.left = (left + delta_x) + "px";
 
-        let delta_y = event.clientY - org_y;
-        frame.style.top = (top + delta_y) + "px";
-      };
+      let delta_y = event.clientY - org_y;
+      frame.style.top = (top + delta_y) + "px";
+    };
+    CS_add_event(document, 'mouseup', onmouseup);
+    CS_add_event(document, 'mousemove', onmousemove);
   }
 
   // called when the dialog is resized
@@ -131,9 +130,7 @@ function CS_dialog_open(options) {
     let width = frame.clientWidth;
     let top = frame.offsetTop;
     let height = frame.offsetHeight;
-    let org_mousedown = frame.onmousedown;
-    let org_mouseup = document.onmouseup;
-    let org_mousemove = document.onmousemove;
+    let onmousedown, onmouseup, onmousemove;
 
     console.log("Mouse pressed for resize");
 
@@ -148,39 +145,38 @@ function CS_dialog_open(options) {
 
     CS_stop_propagation(event);
 
-    document.onmouseup =
-      function (event) {
-        console.log("Mouse released for resize");
-        CS_stop_propagation(event);
-        frame.onmousedown = org_mousedown;
-        document.onmousemove = org_mousemove;
-        document.onmouseup = org_mouseup;
-        corner.style.zindex = org_z;
-      };
-    document.onmousemove =
-      function (event) {
-        CS_stop_propagation(event);
+    onmouseup = event => {
+      console.log("Mouse released for resize");
+      CS_stop_propagation(event);
+      CS_del_event(document, 'mouseup', onmouseup);
+      CS_del_event(document, 'mousemove', onmousemove);
+      corner.style.zindex = org_z;
+    };
+    onmousemove = event => {
+      CS_stop_propagation(event);
 
-        let delta_x = event.clientX - org_x;
-        let w = (width - padding_x +
-          corner.x_coef * delta_x);
-        if (w > 10) {
-          frame.style.width = w + "px";
-          if (corner.x_coef == -1) {
-            frame.style.left = (left + delta_x) + "px";
-          }
+      let delta_x = event.clientX - org_x;
+      let w = (width - padding_x +
+        corner.x_coef * delta_x);
+      if (w > 10) {
+        frame.style.width = w + "px";
+        if (corner.x_coef == -1) {
+          frame.style.left = (left + delta_x) + "px";
         }
+      }
 
-        let delta_y = event.clientY - org_y;
-        let h = (height - padding_y +
-          corner.y_coef * delta_y);
-        if (h > 10) {
-          frame.style.height = h + "px";
-          if (corner.y_coef == -1) {
-            frame.style.top = (top + delta_y) + "px";
-          }
+      let delta_y = event.clientY - org_y;
+      let h = (height - padding_y +
+        corner.y_coef * delta_y);
+      if (h > 10) {
+        frame.style.height = h + "px";
+        if (corner.y_coef == -1) {
+          frame.style.top = (top + delta_y) + "px";
         }
-      };
+      }
+    };
+    CS_add_event(document, 'mouseup', onmouseup);
+    CS_add_event(document, 'mousemove', onmousemove);
   }
 
   // called on close
@@ -279,8 +275,7 @@ function CS_dialog_open(options) {
   if (true || !options.modal) {
     frame.style.cursor = "all-scroll";
     frame.onmousedown = function (event) {
-      if (event.explicitOriginalTarget == this ||
-        event.srcElement == this) {
+      if (event.target == frame) {
         CS_stop_propagation(event);
         move(frame, event);
       }
