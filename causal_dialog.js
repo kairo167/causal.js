@@ -20,7 +20,7 @@
 /*                                                                  */
 /* -*-header-*- */
 
-/*! Create a dialog with either a html or a dom element as content.
+/*! Creates a dialog with either a html or a dom element as content.
  * @param options associative objects as
  * {
  *   animate:  true to animate the changes
@@ -395,7 +395,7 @@ function CS_dialog_close(element) {
   }
 }
 
-/* open a color picker
+/* Opens a color picker
  * title: the dialog title,
  * onclose: callback called with the selected color on close
  * onchange: callback called when the color is selected
