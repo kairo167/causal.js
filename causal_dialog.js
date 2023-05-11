@@ -466,10 +466,12 @@ function CS_color_picker(title,
 
   // add the title
   if (title) {
+    let tr = document.createElement("tr");
     let th = document.createElement("th");
     th.colSpan = ncols;
     th.innerHTML = title;
-    table.insertBefore(th, table.firstChild);
+    tr.appendChild(th);
+    table.insertBefore(tr, table.firstChild);
   }
 
   // set the location
