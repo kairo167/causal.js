@@ -250,7 +250,7 @@ function CS_menu(html, onclose, location) {
         onclose();
       }
       CS_stop_propagation(event);
-      menu.parentNode.removeChild(menu);
+      menu.parentNode && menu.parentNode.removeChild(menu);
       document.onmousedown = onmousedown;
     }
   };
