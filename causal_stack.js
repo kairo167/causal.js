@@ -160,36 +160,39 @@ function CS_bind_stack(stack) {
    */
   function create_separator(index) {
     // create the separator elements
-    let line = document.createElement('div');
     let gripper = document.createElement('div');
+    let handle = document.createElement('div');
+    let line = document.createElement('div');
     let left = document.createElement('div');
     let right = document.createElement('div');
 
     // add the class to the separator element
-    CS_add_class(line, 'CS_line');
     CS_add_class(gripper, 'CS_gripper');
+    CS_add_class(handle, 'CS_handle');
+    CS_add_class(line, 'CS_line');
     CS_add_class(left, 'CS_left');
     CS_add_class(right, 'CS_right');
 
     // add the child index
-    line.stacked = gripper.stacked = left.stacked = right.stacked = index;
+    gripper.stacked = handle.stacked = line.stacked = left.stacked = right.stacked = index;
 
     // set the titles
-    line.title = gripper.title = 'resize the stack view';
+    gripper.title = handle.title = line.title = 'resize the stack view';
     left.title = vertical ? ___('Move left') : ___('Move left');
     right.title = vertical ? ___('Move right') : ___('Move right');
 
     // make the hierarchy
-    gripper.appendChild(left);
-    gripper.appendChild(right);
-    line.appendChild(gripper);
+    handle.appendChild(left);
+    handle.appendChild(right);
+    gripper.appendChild(handle);
+    gripper.appendChild(line);
 
     // add the event handlers
     left.onclick = onleft;
     right.onclick = onright;
-    line.onmousedown = gripper.onmousedown = start_drag;
+    gripper.onmousedown = handle.onmousedown = line.onmousedown = start_drag;
 
-    return line;
+    return gripper;
   }
 
   // if the stack is vertical
@@ -287,9 +290,9 @@ function CS_bind_stack(stack) {
       && position < stack.children.length / 2) {
       // get the child at the position
       let next_child = stack.children[position * 2];
-      
+
       // create a separator
-      let separator = create_separator(position*2);
+      let separator = create_separator(position * 2);
 
       stack.insertBefore(separator, next_child);
       stack.insertBefore(child, next_child);

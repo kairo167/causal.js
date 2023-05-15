@@ -132,114 +132,189 @@
   flex-direction: column;
 }
 
-.CS_stack .CS_line,
 .CS_stack .CS_gripper {
-  cursor: col-resize;
-}
-
-.CS_stack.CS_vertical .CS_line,
-.CS_stack.CS_vertical .CS_gripper {
-  cursor: row-resize;
-}
-
-.CS_stack .CS_line {
   position: relative;
+  overflow: visible;
   height: 100%;
   width: 1px;
 }
 
-.CS_stack.CS_vertical .CS_line {
+.CS_stack .CS_gripper,
+.CS_stack .CS_gripper .CS_line {
+  z-index: 100;
+}
+
+.CS_stack .CS_gripper .CS_handle {
+  z-index: 101;
+}
+
+.CS_stack .CS_gripper {
+  height: 100%;
+  width: 1px;
+}
+
+.CS_stack.CS_vertical .CS_gripper {
   height: 1px;
   width: 100%;
 }
 
-.CS_stack .CS_line,
-.CS_stack .CS_gripper {
-  background-color: #777;
+.CS_stack .CS_gripper .CS_handle,
+.CS_stack .CS_gripper .CS_line {
+  opacity: 0.5;
+  position: absolute;
 }
 
-.CS_stack .CS_line:hover,
-.CS_stack .CS_line:hover .CS_gripper,
-.CS_stack .CS_gripper:hover {
-  background-color: rgb(25 142 233);
+.CS_stack .CS_gripper:hover .CS_handle,
+.CS_stack .CS_gripper:hover .CS_line,
+.CS_stack .CS_gripper .CS_handle:hover,
+.CS_stack .CS_gripper .CS_line:hover {
+  opacity: 0.9;
 }
 
-.CS_stack .CS_line:hover {
+.CS_stack .CS_gripper .CS_line {
+  width: 0.1em;
+  height: 100%;
+}
+
+.CS_stack.CS_vertical .CS_gripper .CS_line {
+  width: 100%;
+  height: 0.1em;
+}
+
+.CS_stack .CS_gripper:hover .CS_line,
+.CS_stack .CS_gripper .CS_line:hover {
+  width: 0.3em;
+  height: 100%;
+}
+
+.CS_stack.CS_vertical .CS_gripper:hover .CS_line,
+.CS_stack.CS_vertical .CS_gripper .CS_line:hover {
+  width: 100%;
   height: 0.3em;
 }
 
-.CS_stack .CS_gripper {
-  z-index: 100;
-  border: none;
-  position: absolute;
+.CS_stack .CS_gripper .CS_line {
+  transform: translate(-50%, 0%);
+  left: 50%;
+  top: 0;
+}
+
+.CS_stack.CS_vertical .CS_gripper .CS_line {
+  transform: translate(0%, -50%);
+  left: 0;
+  top: 50%;
+}
+
+.CS_stack .CS_gripper .CS_handle {
   transform: translate(-50%, -50%);
-  border-radius: 5px;
-  overflow: hidden;
-
-  display: flex;
-  justify-content: space-between;
-
   flex-direction: column;
   align-items: center;
-  width: 1em;
+  width: 0.7em;
   height: 3em;
   left: 0;
   top: 50%;
 }
 
-.CS_stack.CS_vertical .CS_gripper {
+.CS_stack.CS_vertical .CS_gripper .CS_handle {
   flex-direction: row;
   align-items: middle;
   width: 3em;
-  height: 1em;
+  height: 0.7em;
   left: 50%;
+  top: 0;
 }
 
-.CS_stack .CS_gripper .CS_left,
-.CS_stack .CS_gripper .CS_right {
+.CS_stack .CS_gripper:hover .CS_handle,
+.CS_stack .CS_gripper .CS_handle:hover {
+  width: 1em;
+}
+
+.CS_stack.CS_vertical .CS_gripper:hover .CS_handle,
+.CS_stack.CS_vertical .CS_gripper .CS_handle:hover {
+  width: 3em;
+  height: 1em;
+}
+
+.CS_stack .CS_gripper,
+.CS_stack .CS_handle,
+.CS_stack .CS_line {
+  cursor: col-resize;
+}
+
+.CS_stack.CS_vertical .CS_gripper,
+.CS_stack.CS_vertical .CS_handle,
+.CS_stack.CS_vertical .CS_line {
+  cursor: row-resize;
+}
+
+.CS_stack .CS_gripper,
+.CS_stack .CS_gripper .CS_handle,
+.CS_stack .CS_gripper .CS_line {
+  background-color: #777;
+}
+
+.CS_stack .CS_gripper:hover .CS_handle,
+.CS_stack .CS_gripper:hover .CS_line,
+.CS_stack .CS_gripper .CS_handle:hover,
+.CS_stack .CS_gripper .CS_line:hover {
+  background-color: rgb(25 142 233);
+}
+
+.CS_stack .CS_handle {
+  border: none;
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+
+.CS_stack .CS_handle .CS_left,
+.CS_stack .CS_handle .CS_right {
   color: white;
   font-size: 50%;
   background: none;
   border: none;
 }
 
-.CS_stack .CS_gripper .CS_right {
+.CS_stack .CS_handle .CS_right {
   cursor: e-resize;
   margin-right: 0;
   margin-bottom: 0.5em;
 }
 
-.CS_stack.CS_vertical .CS_gripper .CS_right {
+.CS_stack.CS_vertical .CS_handle .CS_right {
   cursor: s-resize;
   margin-right: 0.5em;
   margin-bottom: 0;
 }
 
-.CS_stack .CS_gripper .CS_left {
+.CS_stack .CS_handle .CS_left {
   cursor: w-resize;
   margin-left: 0;
   margin-top: 0.5em;
 }
 
-.CS_stack.CS_vertical .CS_gripper .CS_left {
+.CS_stack.CS_vertical .CS_handle .CS_left {
   cursor: n-resize;
   margin-left: 0.5em;
   margin-top: 0;
 }
 
-.CS_stack .CS_gripper .CS_right::after {
+.CS_stack .CS_handle .CS_right::after {
   content: '▶';
 }
 
-.CS_stack.CS_vertical .CS_gripper .CS_right::after {
+.CS_stack.CS_vertical .CS_handle .CS_right::after {
   content: '▼';
 }
 
-.CS_stack .CS_gripper .CS_left::after {
+.CS_stack .CS_handle .CS_left::after {
   content: '◀';
 }
 
-.CS_stack.CS_vertical .CS_gripper .CS_left::after {
+.CS_stack.CS_vertical .CS_handle .CS_left::after {
   content: '▲';
 }
 
