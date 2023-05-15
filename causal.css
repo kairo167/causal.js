@@ -634,6 +634,7 @@
   flex-wrap: nowrap;
   justify-content: space-around;
   align-items: center;
+  overflow: hidden;
 }
 
 .CS_dialog .CS_overlay {

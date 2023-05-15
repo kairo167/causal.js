@@ -78,107 +78,6 @@ function CS_dialog_open(options) {
   /* animation duration */
   let animation_duration_ms = 400;
 
-  // called when the dialog is moved
-  // frame: the frame object
-  // event: the caller event
-  // return void
-  function move(frame, event) {
-    let org_x = event.clientX;
-    let org_y = event.clientY;
-    let org_z = frame.style.zindex;
-    let left = frame.clientLeft;
-    let top = frame.clientTop;
-
-    console.log("Mouse pressed for move; click=" + org_x + ", " + org_y);
-
-    CS_stop_propagation(event);
-
-    frame.style.zindex = 10000;
-
-    let onmouseup, onmousemove;
-    onmouseup = event => {
-      console.log("Mouse released for move");
-      CS_stop_propagation(event);
-      CS_del_event(document, 'mouseup', onmouseup);
-      CS_del_event(document, 'mousemove', onmousemove);
-      frame.style.zindex = org_z;
-    };
-    onmousemove = event => {
-      console.log("Mouse moved on move");
-      CS_stop_propagation(event);
-
-      let delta_x = event.clientX - org_x;
-      frame.style.left = (left + delta_x) + "px";
-
-      let delta_y = event.clientY - org_y;
-      frame.style.top = (top + delta_y) + "px";
-    };
-    CS_add_event(document, 'mouseup', onmouseup);
-    CS_add_event(document, 'mousemove', onmousemove);
-  }
-
-  // called when the dialog is resized
-  // corner: the clicked corner
-  // frame: the frame object
-  // event: the caller event
-  // return void
-  function resize(corner, frame, event) {
-    let org_x = event.clientX;
-    let org_y = event.clientY;
-    let org_z = corner.style.zindex;
-    let left = frame.offsetLeft;
-    let width = frame.clientWidth;
-    let top = frame.offsetTop;
-    let height = frame.offsetHeight;
-    let onmousedown, onmouseup, onmousemove;
-
-    console.log("Mouse pressed for resize");
-
-    let padding_x, padding_y;
-    let styles = window.getComputedStyle(frame);
-    padding_x = (parseFloat(styles.paddingLeft) +
-      parseFloat(styles.paddingRight));
-    padding_y = (parseFloat(styles.paddingTop) +
-      parseFloat(styles.paddingBottom));
-
-    corner.style.zindex = 10000;
-
-    CS_stop_propagation(event);
-
-    onmouseup = event => {
-      console.log("Mouse released for resize");
-      CS_stop_propagation(event);
-      CS_del_event(document, 'mouseup', onmouseup);
-      CS_del_event(document, 'mousemove', onmousemove);
-      corner.style.zindex = org_z;
-    };
-    onmousemove = event => {
-      CS_stop_propagation(event);
-
-      let delta_x = event.clientX - org_x;
-      let w = (width - padding_x +
-        corner.x_coef * delta_x);
-      if (w > 10) {
-        frame.style.width = w + "px";
-        if (corner.x_coef == -1) {
-          frame.style.left = (left + delta_x) + "px";
-        }
-      }
-
-      let delta_y = event.clientY - org_y;
-      let h = (height - padding_y +
-        corner.y_coef * delta_y);
-      if (h > 10) {
-        frame.style.height = h + "px";
-        if (corner.y_coef == -1) {
-          frame.style.top = (top + delta_y) + "px";
-        }
-      }
-    };
-    CS_add_event(document, 'mouseup', onmouseup);
-    CS_add_event(document, 'mousemove', onmousemove);
-  }
-
   // called on close
   // dialog: the dialog itself
   function doclose(dialog) {
@@ -273,29 +172,110 @@ function CS_dialog_open(options) {
 
   // allow move for non modal dialogs
   if (true || !options.modal) {
+    //Change the cursor
     frame.style.cursor = "all-scroll";
+
+    // on frame click
     frame.onmousedown = function (event) {
+      // if the frame is clicked
       if (event.target == frame) {
+        // stop the event propagation
         CS_stop_propagation(event);
-        move(frame, event);
+
+        // start a drag event to move the frame
+        CS_drag(
+          frame,
+          // on start
+          (mouse) => {
+            // store the initial delta from the style
+            frame.delta = {
+              x: frame.style.left ? parseInt(frame.style.left.replace('px', '')) : 0,
+              y: frame.style.top ? parseInt(frame.style.top.replace('px', '')) : 0
+            };
+
+            // return true to continue dragging
+            return true;
+          },
+          // ondrag
+          (start, delta) => {
+            // update the frame style
+            frame.style.left = (frame.delta.x + delta.x) + 'px';
+            frame.style.top = (frame.delta.y + delta.y) + 'px';
+            return true;
+          });
       }
     }
-    let structs =
-      [{ name: "frame_tl", x_coef: -1, y_coef: -1 },
+
+    const structs = [
+      // top-left corner
+      { name: "frame_tl", x_coef: -1, y_coef: -1 },
+
+      // bottom-left corner
       { name: "frame_bl", x_coef: -1, y_coef: +1 },
-      { name: "frame_br", x_coef: +1, y_coef: +1 }];
-    for (let i = 0; i < structs.length; i++) {
-      let struct = structs[i];
+
+      // bottom-right corner
+      { name: "frame_br", x_coef: +1, y_coef: +1 }
+
+      // the top-right corner has the close button so it is not
+      // used tor resizing
+    ];
+
+    structs.forEach(struct => {
+      // create the corner element and append it to the frame
       let corner = document.createElement("div");
       frame.appendChild(corner);
+
+      // add the corner class
       CS_add_class(corner, "CS_" + struct.name);
+
+      // set the coefficients
       corner.x_coef = struct.x_coef;
       corner.y_coef = struct.y_coef;
+
+      // set the on mousedown event
       corner.onmousedown = function (event) {
         CS_stop_propagation(event);
-        resize(this, frame, event);
+        // start a drag event to move the frame
+        CS_drag(
+          frame,
+          // on start
+          (mouse) => {
+            // store the initial delta from the style
+            frame.delta = {
+              x: frame.style.left ? parseInt(frame.style.left.replace('px', '')) : 0,
+              y: frame.style.top ? parseInt(frame.style.top.replace('px', '')) : 0,
+              w: CS_get_internal_width(frame),
+              h: CS_get_internal_height(frame),
+            };
+
+            // return true to continue dragging
+            return true;
+          },
+          // ondrag
+          (start, delta) => {
+            // on x
+            if (struct.x_coef == -1) {
+              frame.style.left = (frame.delta.x + delta.x / 2) + 'px';
+              frame.style.width = (frame.delta.w - delta.x) + 'px';
+            }
+            else {
+              frame.style.left = (frame.delta.x + delta.x / 2) + 'px';
+              frame.style.width = (frame.delta.w + delta.x) + 'px';
+            }
+
+            // on y
+            if (struct.y_coef == -1) {
+              frame.style.top = (frame.delta.y + delta.y / 2) + 'px';
+              frame.style.height = (frame.delta.h - delta.y) + 'px';
+            }
+            else {
+              frame.style.top = (+frame.delta.y + delta.y / 2) + 'px';
+              frame.style.height = (frame.delta.h + delta.y) + 'px';
+            }
+            return true;
+          });
       };
-    }
+    });
   }
 
   // close button
@@ -400,12 +380,7 @@ function CS_dialog_close(element) {
  * return false
  */
 /** @export */
-function CS_color_picker(title,
-  onclose,
-  onchange,
-  modal,
-  blur,
-  styles) {
+function CS_color_picker(title, onclose, onchange, modal, blur, styles) {
   let table = document.createElement("table");
   //table.border = 1;
   CS_add_class(table, "CS_color-picker");
