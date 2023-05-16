@@ -214,23 +214,44 @@ function CS_bind_menu(elem, onclose, level) {
   }
 }
 
-function CS_menu(html, onclose, location) {
+/*! Open  a popup menu.
+ * @param content the menu dom element of the html contents,
+ * @param onclose optional callback called when the menu is closed,
+ * @param parameters {top:left:class:} parameters,
+ * @return void.
+ */
+/** @export */
+function CS_menu(content, onclose, parameters) {
+  // create the popup menu and add the class
   let menu = document.createElement("div");
   CS_add_class(menu, "CS_popmenu");
-  menu.innerHTML = html;
 
-  if (location) {
-    if (location.left) {
-      menu.style.left = location.left;
+  // add the user class if any
+  if (parameters && parameters.class) {
+    CS_add_class(menu, parameters.class);
+  }
+
+  // set the menu content
+  if (typeof content == 'string') {
+    menu.innerHTML = content;
+  }
+  else {
+    menu.appendChild(content);
+  }
+
+  // set the menu location
+  if (parameters) {
+    if (parameters.left) {
+      menu.style.left = parameters.left;
     }
-    if (location.top) {
-      menu.style.top = location.top;
+    if (parameters.top) {
+      menu.style.top = parameters.top;
     }
-    if (location.width) {
-      menu.style.width = location.width;
+    if (parameters.width) {
+      menu.style.width = parameters.width;
     }
-    if (location.height) {
-      menu.style.height = location.height;
+    if (parameters.height) {
+      menu.style.height = parameters.height;
     }
   }
   else {
@@ -238,6 +259,7 @@ function CS_menu(html, onclose, location) {
     menu.style.top = window.event.clientY + "px";
   }
 
+  // onmousedown handler
   const onmousedown = function (event) {
     console.log("Mouse released from menu");
 
@@ -255,6 +277,7 @@ function CS_menu(html, onclose, location) {
     }
   };
 
+  // bind the menu
   CS_bind_menu(menu, function (item) {
     if (onclose) {
       if (!onclose(item)) {
@@ -265,7 +288,9 @@ function CS_menu(html, onclose, location) {
     CS_del_event(document, 'mousedown', onmousedown);
   });
 
+  // add the mouse down handler
   CS_add_event(document, 'mousedown', onmousedown);
 
+  // add the menu to the document
   document.body.appendChild(menu);
 }
