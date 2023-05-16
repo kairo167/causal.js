@@ -387,10 +387,13 @@ function _CS_modal_capture(event) {
       var target = document.CS_modals[document.CS_modals.length - 1];
 
       // if the target is not specified or if the clicked element is not
-      // a descendant of the target
-      if (target === true
-        || (typeof target != 'undefined' && typeof target.elem != 'undefined'
-          && !CS_is_descendant(target.elem, event.target))) {
+      // the target not a descendant of the target
+      if (
+        target === true ||
+        (typeof target != 'undefined' &&
+          typeof target.elem != 'undefined' &&
+          target.elem != event.target &&
+          !CS_is_descendant(target.elem, event.target))) {
         // stop the event propagation
         CS_stop_propagation(event);
 
