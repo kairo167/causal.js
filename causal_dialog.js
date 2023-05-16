@@ -146,10 +146,6 @@ function CS_dialog_open(options) {
 
   // set the frame class name
   CS_add_class(frame, "CS_frame");
-  if (options.class) {
-    CS_add_class(frame, options.class);
-  }
-
   // add the styles if specified
   if (options.styles) {
     // if the styles are provided as an array or an object
@@ -303,6 +299,11 @@ function CS_dialog_open(options) {
     }
     doclose(dialog);
     return false;
+  }
+
+  // append the specific class if any
+  if (options.class) {
+    CS_add_class(content, options.class);
   }
 
   // add the dialog content to the content div
