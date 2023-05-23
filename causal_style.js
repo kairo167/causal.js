@@ -259,9 +259,10 @@ function CS_set_internal_height(element, height) {
  */
 /** @export */
 function CS_get_top(element, parent) {
-  for (let top = 0;
-    element && (!parent || CS_is_descendant(element, parent));
-    element = element.offsetParent || element.parentElement) {
+  let top;
+  for (top = 0;
+       element && (!parent || CS_is_descendant(parent, element));
+       element = element.offsetParent || element.parentElement) {
     top += element.offsetTop;
   }
   return top;
@@ -274,9 +275,10 @@ function CS_get_top(element, parent) {
  */
 /** @export */
 function CS_get_left(element, parent) {
-  for (let left = 0;
-    element && (!parent || CS_is_descendant(element, parent));
-    element = element.offsetParent || element.parentElement) {
+  let left;
+  for (left = 0;
+       element && (!parent || CS_is_descendant(parent, element));
+       element = element.offsetParent || element.parentElement) {
     left += element.offsetLeft;
   }
   return left;
