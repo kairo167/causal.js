@@ -116,7 +116,7 @@ function CS_bind_stack(stack) {
   }
 
   /*! Gripper mouse down callback.
-   * @param envent the event.
+   * @param event the event.
    */
   function start_drag(event) {
     // get the child element
@@ -148,7 +148,7 @@ function CS_bind_stack(stack) {
       },
 
       //onend
-      (mouse, draged) => {
+      (mouse, dragged) => {
         console.log('end dragging');
       }
     );
@@ -279,7 +279,7 @@ function CS_bind_stack(stack) {
 
   /*! Adds a child.
    * @param child the child to add,
-   * @param position optional the position.
+   * @param position the optional position index.
    */
   stack.add = function (child, position) {
     // if the position is provided and it it is valid
@@ -291,20 +291,29 @@ function CS_bind_stack(stack) {
       // get the child at the position
       let next_child = stack.children[position * 2];
 
-      // create a separator
-      let separator = create_separator(position * 2);
+      // if there is a position
+      if (position) {
+        // create a separator
+        let separator = create_separator(position * 2);
+        stack.insertBefore(separator, next_child);
+      }
 
-      stack.insertBefore(separator, next_child);
+      // insert the new child
       stack.insertBefore(child, next_child);
     }
 
     // otherwise, simply append the new children
     else {
-      // create a separator
-      let separator = create_separator(stack.children.length);
+      // if there is some child
+      if (stack.children.length) {
+        // create a separator
+        let separator = create_separator(stack.children.length);
 
-      // append the separator and the child
-      stack.appendChild(separator);
+        // append the separator
+        stack.appendChild(separator);
+      }
+
+      // append the child
       stack.appendChild(child);
     }
 
