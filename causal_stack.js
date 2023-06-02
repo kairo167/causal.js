@@ -20,7 +20,8 @@
 /*                                                                  */
 /* -*-header-*- */
 
-/*! Bind the given stack widget.
+/*! Bind the given stack widget. The stack widget can define .onchange (action)
+ * where action can be 'start-resize', 'resize' or 'end-resize'.
  * @param stack the widget,
  * @return void.
  */
@@ -58,7 +59,7 @@ function CS_bind_stack(stack) {
   }
 
   /*! Onright button pressed callback.
-   * @param envent the event.
+   * @param event the event.
    */
   function onright(event) {
     // get the child element
@@ -136,6 +137,9 @@ function CS_bind_stack(stack) {
         delete child.stacked_size;
         delete next_child.stacked_size;
 
+        if (stack.onchange) {
+          stack.onchange('start-resize');
+        }
         return true;
       },
 
@@ -144,12 +148,18 @@ function CS_bind_stack(stack) {
         console.log('dragging');
         set_size(child, size + (vertical ? delta.y : delta.x));
         set_size(next_child, next_size - (vertical ? delta.y : delta.x));
+        if (stack.onchange) {
+          stack.onchange('resize');
+        }
         return true;
       },
 
       //onend
       (mouse, dragged) => {
         console.log('end dragging');
+        if (stack.onchange) {
+          stack.onchange('end-resize');
+        }
       }
     );
   }
