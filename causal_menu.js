@@ -172,7 +172,7 @@ function CS_bind_menu(elem, onclose, level) {
       break;
     }
     case "a":
-      if (!elem.binded) {
+      if (!elem.bound) {
         elem.org_onclick = elem.onclick;
 
         elem.onclick = function (event) {
@@ -224,7 +224,8 @@ function CS_bind_menu(elem, onclose, level) {
     CS_add_class(elem, "CS_level-" + level);
   }
 
-  elem.binded = true;
+  // set the flag
+  elem.bound = true;
 
   for (let i = 0; i < elem.children.length; i++) {
     CS_bind_menu(elem.children[i], onclose, level);

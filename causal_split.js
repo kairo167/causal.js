@@ -343,9 +343,9 @@ function CS_bind_split(split, callback) {
 
   // bind the left element
   if (typeof left != "undefined" &&
-    (typeof left.binded == "undefined" || !left.binded)) {
+    (typeof left.bound == "undefined" || !left.bound)) {
     // set the flag
-    left.binded = true;
+    left.bound = true;
 
     // set a default identifier
     if (left.id == "") {
@@ -369,11 +369,11 @@ function CS_bind_split(split, callback) {
 
   // bind the gripper
   if (typeof gripper != "undefined" &&
-    (typeof gripper.binded == "undefined" || !gripper.binded)) {
+    (typeof gripper.bound == "undefined" || !gripper.bound)) {
     // get the flag
-    gripper.binded = true;
+    gripper.bound = true;
 
-    // set a default idnetifier on need
+    // set a default identifier on need
     if (gripper.id == "") {
       gripper.id = CS_generate_uuid("gripper");
     }
@@ -396,9 +396,9 @@ function CS_bind_split(split, callback) {
 
   // bind the right element
   if (typeof right != "undefined" &&
-    (typeof right.binded == "undefined" || !right.binded)) {
+    (typeof right.bound == "undefined" || !right.bound)) {
     // set the flag
-    right.binded = true;
+    right.bound = true;
 
     // set a default identifier on need
     if (right.id == "") {

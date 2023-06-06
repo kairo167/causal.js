@@ -98,8 +98,8 @@ function CS_bind() {
         CS_bind_vfill(vfills[i]);
       }
     }
-    else if (typeof vfill.binded == "undefined" || !vfill.binded) {
-      vfill.binded = true;
+    else if (typeof vfill.bound == "undefined" || !vfill.bound) {
+      vfill.bound = true;
       let parent = vfill.parentNode;
       let height = vfill.style.height ? vfill.style.height : 100;
       vfill.style.height = (parent.clientHeight * height / 100) + 'px';
