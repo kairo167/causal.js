@@ -199,7 +199,7 @@ function CS_bind_menu(elem, onclose, level) {
           else {
             // on touch screen
             if (event.pointerType == "touch") {
-              // ensure all the hierachy is opened
+              // ensure all the hierarchy is opened
               CS_open_menu(elem);
 
               elem.focus();
@@ -211,17 +211,19 @@ function CS_bind_menu(elem, onclose, level) {
       break;
   }
 
+  // set the level of the ul elements
   if (elem.tagName.toLowerCase() == "ul") {
-    level += 1;
-  }
+    // update the class it it already exists
+    if (CS_has_class(elem, "CS_level-\\d*")) {
+      elem.className =
+        elem.className.replace(/(?:^|\s)CS_level-\d*(?!\S)/g,
+          " CS_level-" + level);
+    }
 
-  if (CS_has_class(elem, "CS_level-\\d*")) {
-    elem.className =
-      elem.className.replace(/(?:^|\s)CS_level-\d*(?!\S)/g,
-        " CS_level-" + level);
-  }
-  else {
-    CS_add_class(elem, "CS_level-" + level);
+    // otherwise, set it
+    else {
+      CS_add_class(elem, "CS_level-" + level);
+    }
   }
 
   // set the flag

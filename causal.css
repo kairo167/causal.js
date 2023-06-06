@@ -424,6 +424,11 @@
   padding: 0px;
 }
 
+.CS_menu ul ul > li,
+.CS_popmenu ul > li {
+  z-index: auto;
+}
+
 .CS_popmenu .CS_level-1,
 .CS_menu .CS_level-1 {
   z-index: 31;
