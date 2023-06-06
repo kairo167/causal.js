@@ -93,6 +93,18 @@ function CS_bind_menu(elem, onclose, level) {
 
     // add the over class
     CS_add_class(li, 'CS_over');
+
+    // if the item has a submenu
+    if (CS_has_class(li, 'CS_submenu')) {
+      // for all the children
+      for (let i = 0; i < elem.children.length; i++) {
+        // if the child is a submenu
+        if (elem.children[i].tagName.toLowerCase() == "ul") {
+          CS_ensure_visible(elem.children[i]);
+          break;
+        }
+      }
+    }
   }
 
   /*! Onmouseleave callback bound to the li element of the menus.
@@ -138,22 +150,27 @@ function CS_bind_menu(elem, onclose, level) {
     }
   }
 
+  // depending to the type of the element
   switch (elem.tagName.toLowerCase()) {
-    case "div":
-      break;
-
-    case "li":
+    case "li": {
+      // for all the children
       for (let i = 0; i < elem.children.length; i++) {
+        // if the child is a submenu
         if (elem.children[i].tagName.toLowerCase() == "ul") {
+          // get the child
           let child = elem.children[i];
+
+          // add the submenu class
           CS_add_class(elem, "CS_submenu");
           break;
         }
       }
+
+      // add the element in the observer and bin the enter/leave handlers
       elem.onmouseenter = li_onmouseenter;
       elem.onmouseleave = li_onmouseleave;
       break;
-
+    }
     case "a":
       if (!elem.binded) {
         elem.org_onclick = elem.onclick;
