@@ -347,6 +347,14 @@ function CS_bind_stack(stack) {
         ? stack.children[position * 2]
         : false);
     }
+    else {
+      for (position = 0; position < stack.children.length; position++) {
+        if (stack.children[position] == child_or_position) {
+          break;
+        }
+      }
+      child = child_or_position;
+    }
 
     // if the child exists
     if (child !== false && stack.contains(child)) {
