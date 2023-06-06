@@ -261,8 +261,8 @@ function CS_set_internal_height(element, height) {
 function CS_get_top(element, parent) {
   let top;
   for (top = 0;
-       element && (!parent || CS_is_descendant(parent, element));
-       element = element.offsetParent || element.parentElement) {
+    element && (!parent || CS_is_descendant(parent, element));
+    element = element.offsetParent || element.parentElement) {
     top += element.offsetTop;
   }
   return top;
@@ -277,8 +277,8 @@ function CS_get_top(element, parent) {
 function CS_get_left(element, parent) {
   let left;
   for (left = 0;
-       element && (!parent || CS_is_descendant(parent, element));
-       element = element.offsetParent || element.parentElement) {
+    element && (!parent || CS_is_descendant(parent, element));
+    element = element.offsetParent || element.parentElement) {
     left += element.offsetLeft;
   }
   return left;
@@ -328,18 +328,11 @@ function CS_ensure_visible(element, container = window) {
   let rel;
   let pos = CS_get_style(element, "position");
 
-  switch (pos) {
-    case "fixed":
-      rel = false;
-      break;
-
-    case "absolute":
-      rel = get_relative(element.parentElement);
-      break;
-
-    default:
-    case "static":
-      return;
+  if (pos == 'absolute') {
+    rel = get_relative(element.parentElement);
+  }
+  else {
+    rel = false;
   }
 
   let x = CS_get_x(element);
