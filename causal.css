@@ -553,13 +553,13 @@
   width: 100%;
 }
 
-.CS_menu ul li.CS_level-2.CS_submenu::after,
-.CS_popmenu li.CS_level-1.CS_submenu::after,
-.CS_popmenu li.CS_level-2.CS_submenu::after,
-.CS_menu ul li.CS_level-3.CS_submenu::after,
-.CS_popmenu li.CS_level-3.CS_submenu::after,
-.CS_menu ul li.CS_level-4.CS_submenu::after,
-.CS_popmenu li.CS_level-4.CS_submenu::after {
+.CS_menu ul li.CS_submenu::after,
+.CS_popmenu li.CS_submenu::after,
+.CS_popmenu li.CS_submenu::after,
+.CS_menu ul li.CS_submenu::after,
+.CS_popmenu li.CS_submenu::after,
+.CS_menu ul li.CS_submenu::after,
+.CS_popmenu li.CS_submenu::after {
   content: '▶';
   position: absolute;
   top: 50%;
