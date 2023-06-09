@@ -122,7 +122,7 @@ function CS_bind_stack(stack) {
   function start_drag(event) {
     // get the child element
     let child = stack.children[event.target.stacked];
-    let next_child = stack.children[event.target.stacked + 2];
+    let next_child = stack.children[event.target.stacked + 1];
 
     let size, next_size;
     CS_drag(
