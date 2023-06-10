@@ -20,8 +20,11 @@
 /*                                                                  */
 /* -*-header-*- */
 
-/*! Bind the given stack widget. The stack widget can define .onchange (action)
- * where action can be 'start-resize', 'resize' or 'end-resize'.
+/*! Bind the given stack widget.
+* The stack widget can define stack.onchange (action, child, next_child)
+ * where action can be 'start-resize', 'resize' or 'end-resize' and child
+ * and next_child surround the gripper handle.
+ * The stacked element can have the stacked_size value set the size in pixel.
  * @param stack the widget,
  * @return void.
  */
@@ -30,32 +33,77 @@ function CS_bind_stack(stack) {
   // vertical flag
   let vertical = false;
 
-  /*! Get the size of a child.
+  /*! Get the size of the element in pixels.
+   * @param element the element to query,
+   * @return number the size in pixels.
+   */
+  function get_pixels_size(element) {
+    // on vertical stack
+    if (vertical) {
+      return element == stack
+        ? CS_get_internal_height(element)
+        : CS_get_external_height(element);
+    }
+
+    // on horizontal stack
+    else {
+      return element == stack
+        ? CS_get_internal_width(element)
+        : CS_get_external_width(element);
+    }
+  }
+
+  /*! Set the size of the element in pixels.
+   * @param element the element to set,
+   * @param size the size in pixels.
+   */
+  function set_pixels_size(element, size) {
+    // on vertical stack
+    if (vertical) {
+      return element == stack
+        ? CS_set_internal_height(element, size)
+        : CS_set_external_height(element, size);
+    }
+
+    // on horizontal stack
+    else {
+      return element == stack
+        ? CS_set_internal_width(element, size)
+        : CS_set_external_width(element, size);
+    }
+  }
+
+  /*! Get the size of a child in percentage against the stack.
    * @param child the child element,
    * @return number the size.
    */
   function get_size(child) {
-    // on vertical stack
-    if (vertical) {
-      return CS_get_external_height(child);
-    }
-    else {
-      return CS_get_external_width(child);
-    }
+    // get the stack and child sizes
+    const child_size = get_pixels_size(child);
+    const stack_size = get_pixels_size(stack);
+
+    // return the percentage
+    return (child_size * 100 / stack_size) | 0;
   }
 
   /*! Set the size of a child.
    * @param child the child element,
-   * @param size the size to set.
+   * @param size the size as a percentage of the stack size to set.
    */
   function set_size(child, size) {
-    // on vertical stack
-    if (vertical) {
-      CS_set_external_height(child, size);
+    // check the size
+    if (size < 0 || size > 100) {
+      throw `invalid percentage size ${size}`;
     }
-    else {
-      CS_set_external_width(child, size);
-    }
+
+    // get the stack size
+    let stack_size = get_pixels_size(stack);
+
+    // get the actual child size
+    let child_size = (stack_size * size / 100) | 0;
+
+    // set the size
+    set_pixels_size(child, child_size);
   }
 
   /*! Onright button pressed callback.
@@ -122,23 +170,25 @@ function CS_bind_stack(stack) {
   function start_drag(event) {
     // get the child element
     let child = stack.children[event.target.stacked];
-    let next_child = stack.children[event.target.stacked + 1];
+    let next_child = stack.children[event.target.stacked + 2];
 
     let size, next_size;
+    const stack_size = get_pixels_size(stack);
+
     CS_drag(
       window,
 
       // onstart
       (mouse) => {
         console.log('start drag');
-        size = get_size(child);
-        next_size = get_size(next_child);
+        size = get_pixels_size(child);
+        next_size = get_pixels_size(next_child);
 
         delete child.stacked_size;
         delete next_child.stacked_size;
 
         if (stack.onchange) {
-          stack.onchange('start-resize');
+          stack.onchange('start-resize', child, next_child);
         }
         return true;
       },
@@ -146,10 +196,15 @@ function CS_bind_stack(stack) {
       //ondrag,
       (start, delta) => {
         console.log('dragging');
-        set_size(child, size + (vertical ? delta.y : delta.x));
-        set_size(next_child, next_size - (vertical ? delta.y : delta.x));
+
+        // get the size delta
+        const size_delta = (vertical ? delta.y : delta.x);
+
+        set_pixels_size(child, size + size_delta);
+        set_pixels_size(next_child, next_size - size_delta);
+
         if (stack.onchange) {
-          stack.onchange('resize');
+          stack.onchange('resize', child, next_child);
         }
         return true;
       },
@@ -157,8 +212,9 @@ function CS_bind_stack(stack) {
       //onend
       (mouse, dragged) => {
         console.log('end dragging');
-        if (stack.onchange) {
-          stack.onchange('end-resize');
+        if (dragged && stack.onchange) {
+          // call the callback
+          stack.onchange('end-resize', child, next_child);
         }
       }
     );
@@ -231,18 +287,9 @@ function CS_bind_stack(stack) {
     }
   }
 
-  // for all the stack children
-  for (let i = 0; i < stack.children.length; i += 2) {
-    // get the children
-    let child = stack.children[i];
-
-    // set its stacked size
-    set_size(child, get_size(child));
-  }
-
   // exported methods
 
-  /*! View only one child of restore all the children.
+  /*! View only one child or restore all the children.
    * @param child the optional child to view.
    */
   stack.view = function (child) {
@@ -317,7 +364,7 @@ function CS_bind_stack(stack) {
       // if there is some child
       if (stack.children.length) {
         // create a separator
-        let separator = create_separator(stack.children.length);
+        let separator = create_separator(stack.children.length - 1);
 
         // append the separator
         stack.appendChild(separator);
@@ -338,22 +385,34 @@ function CS_bind_stack(stack) {
    * @param child the child to delete or its position.
    */
   stack.del = function (child_or_position) {
-    let child, position;
+    let child, index, position;
 
     // get the child and its position
     if (typeof child_or_position == 'number') {
+      // set the position
       position = child_or_position;
-      child = (position < stack.children.length / 2
-        ? stack.children[position * 2]
-        : false);
+
+      // look for the index and the child
+      index = position * 2;
+      child = index < stack.children.length ? stack.children[index] : false;
     }
     else {
-      for (position = 0; position < stack.children.length; position++) {
-        if (stack.children[position] == child_or_position) {
+      // get the child index
+      for (index = 0; index < stack.children.length; index++) {
+        if (stack.children[index] == child_or_position) {
           break;
         }
       }
-      child = child_or_position;
+
+      // if not found, reset the child
+      if (index == stack.children.length) {
+        child = false;
+      }
+      // otherwise, set the child
+      else {
+        child = child_or_position;
+        position = index / 2;
+      }
     }
 
     // if the child exists
@@ -361,15 +420,20 @@ function CS_bind_stack(stack) {
       //         child | child | child
       // index     0   1   2   3   4
       // position  0       1       2
-      let separator = false;
+
+      // get the separator after the child if the child is the first one
+      // and the separator before otherwise
       if (stack.children.length > 1) {
-        // get the separator before if the child is not the first child
-        // and the separator after the child otherwise
-        separator = stack.children[position * 2 + (position > 0 ? -1 : +1)]
+        separator = stack.children[index ? index - 1 : +1];
+      }
+      else {
+        separator = false;
       }
 
-      // remove the child and the separator
+      // remove the child
       stack.removeChild(child);
+
+      // remove the separator
       if (separator) {
         stack.removeChild(separator);
       }
@@ -377,5 +441,21 @@ function CS_bind_stack(stack) {
       // remove the stacked class
       CS_del_class(child, 'CS_stacked');
     }
+  };
+
+  /*! Gets the size a child element as a percentage of the stack size.
+   * @param child the child to query,
+   * @return number: the size of the child.
+   */
+  stack.get_size = function (child) {
+    return get_size(child);
+  };
+
+  /*! Sets the size a child element.
+   * @param child the child to set,
+   * @param size the size of the element, as a percentage of the stack size.
+   */
+  stack.set_size = function (child, size) {
+    set_size(child, size);
   };
 }
