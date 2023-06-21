@@ -847,6 +847,11 @@ function CS_drag(element, onstart, ondrag, onend) {
   CS_add_event(window, 'touchcancel', mouseup, true);
 }
 
+/*! Double click event timeout in milliseconds.
+ */
+/** @export */
+const CS_double_click_time_ms = 500;
+
 /*! Double click event handler for th given element.
  * @param onclick the on click event handler,
  * @param ondblclick the on double click event handler,
@@ -857,7 +862,8 @@ function CS_drag(element, onstart, ondrag, onend) {
  */
 /** @export */
 function CS_double_click_handler(
-  element, onclick, ondblclick, equiv = false, double_click_ms = 500) {
+  element, onclick, ondblclick, equiv = false,
+  double_click_ms = CS_double_click_time_ms) {
   // last click time
   let last_click_time = 0;
 
