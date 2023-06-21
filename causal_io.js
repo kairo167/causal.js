@@ -317,7 +317,7 @@ function _CS_ajax_load(options) {
     data = null;
   }
 
-  // create the ajax quaty
+  // create the ajax query
   let xhr = CS_create_xhr();
 
   // set the on progress callback
