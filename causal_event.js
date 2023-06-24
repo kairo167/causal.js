@@ -693,11 +693,24 @@ function CS_animate_hide(element, duration_ms) {
  */
 /** @export */
 function CS_drag(element, onstart, ondrag, onend) {
+  /*! Get the mouse location, depending to the event type.
+   * @param event the event,
+   * @return {x:y:}
+   */
+  function get_xy(event) {
+    if (event.touches && event.touches.length) {
+      return { x: event.touches[0].pageX, y: event.touches[0].pageY };
+    }
+    else {
+      return { x: event.pageX, y: event.pageY };
+    }
+  }
+
   // drag status
   let dragged = false;
 
   // keep the grag start screen position
-  let drag_start = { x: window.event.pageX, y: window.event.pageY };
+  let drag_start = get_xy(window.event);
 
   /*! Stop the drag process.
    * @param event the event that caused the stop,
@@ -752,7 +765,7 @@ function CS_drag(element, onstart, ondrag, onend) {
 
     // keep the grag start screen position
     // let mouse = CS_getxy(event);
-    let mouse = { x: window.event.pageX, y: window.event.pageY };
+    let mouse = get_xy(window.event);
 
     // get the mouse delta
     let delta = { x: mouse.x - drag_start.x, y: mouse.y - drag_start.y };
@@ -871,7 +884,7 @@ function CS_double_click_handler(
   let click_alarm = false;
 
   // return the element.onclick event handler
-  element.onclick = function (event) {
+  element.ontouch = element.onclick = function (event) {
     // get the current time
     const now = CS_now();
 
