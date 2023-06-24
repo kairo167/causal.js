@@ -59,9 +59,11 @@ function CS_close_menu(elem) {
  */
 /** @export */
 function CS_open_menu(elem) {
-  if (elem.tagName != 'UL' || !CS_has_class(elem, "CS_level-1")) {
-    CS_add_class(elem, "CS_over");
-    CS_open_menu(elem.parentNode);
+  if (element != document) {
+    if (elem.tagName != 'UL' || !CS_has_class(elem, "CS_level-1")) {
+      CS_add_class(elem, "CS_over");
+      CS_open_menu(elem.parentNode);
+    }
   }
 }
 
