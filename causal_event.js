@@ -1,4 +1,3 @@
-/*                                                                  */
 /*                       C l a r i 3 D  (r)                         */
 /*                                                                  */
 /*                    The ultimate 3D Explorer                      */
@@ -102,7 +101,7 @@ function CS_getxy(event) {
 };
 
 /*! Return true if the location are almost the same. Commonly used to know if
- * a click occured at the same location.
+ * a click ocurred at the same location.
  * @param previous_xy previous location,
  * @param event optional event,
  * @param epsilon optional epsilon value (default is 3),
@@ -167,7 +166,7 @@ const CS_mouse_buttons = {
  */
 /** @export */
 function CS_is_mouse_event_with_button(event, buttons) {
-  // if the left mouse buton key is not pressed
+  // if the left mouse button key is not pressed
   if (typeof event.buttons == "undefined") {
     return -1;
   }
@@ -177,7 +176,7 @@ function CS_is_mouse_event_with_button(event, buttons) {
 }
 
 /* Adds a mouse stop event listener.
- * @param obj: the object where to add the listner,
+ * @param obj: the object where to add the listener,
  * @param fn: the callback function,
  * @param capture: true to capture all the event,
  * @param passive: the passive mode of the event,
@@ -232,7 +231,7 @@ function CS_install_mouse_stop_handler(obj, fn, capture, passive) {
 }
 
 /* Removes a mouse stop event listener.
- * @param obj: the object where from where to remove the listner,
+ * @param obj: the object where from where to remove the listener,
  * @param fn: the callback function,
  * @param capture: true to capture all the event,
  * @param passive: the passive mode of the event,
@@ -246,7 +245,7 @@ function CS_remove_mouse_stop_handler(obj, fn, capture, passive) {
       // get the index of the function
       const index = obj.mousestop.callbacks.indexOf(fn);
 
-      // if the array conteins fn
+      // if the array contains fn
       if (index > -1) {
         obj.mousestop.callbacks.splice(index, 1);
       }
@@ -276,7 +275,7 @@ function CS_remove_mouse_stop_handler(obj, fn, capture, passive) {
 }
 
 /* Adds an event listener.
- * @param obj: the object where to add the listner,
+ * @param obj: the object where to add the listener,
  * @param type: the event type to listen for,
  * @param fn: the callback function,
  * @param capture: true to capture all the events,
@@ -309,7 +308,7 @@ function CS_add_event(obj, type, fn, capture, passive) {
 }
 
 /* Removes an event listener from an object.
- * @param obj: the object from where to remove the listner,
+ * @param obj: the object from where to remove the listener,
  * @param type: the event type to listen for,
  * @param fn: the callback function,
  * @param capture: true to capture all the event,
@@ -475,15 +474,17 @@ function CS_modal_capture(target, callback, noscroll) {
   return document.CS_modals.length;
 }
 
-/* Call a function after a certain delay in mili-seconds. Notive that the
+/* Call a function after a certain delay in milliseconds. Notice that the
  * alarm can be cancelled with CS_cancel_alarm().
  * @param delay_ms the delay in milliseconds
- * @param callback the callback function with the alamr identifier as argument,
+ * @param callback the callback function with the alarm identifier as argument,
  * @return alarm: the alarm identifier.
  */
 /** @export */
 function CS_alarm(delay_ms, callback) {
-  let alarm = setTimeout(function () { callback(alarm); }, delay_ms);
+  let alarm = setTimeout(function () {
+    callback(alarm);
+  }, delay_ms);
   return alarm;
 }
 
@@ -492,36 +493,49 @@ function CS_alarm(delay_ms, callback) {
  * @return void.
  */
 /** @export */
-function CS_cancel_alarm(alarm) { clearTimeout(alarm); }
+function CS_cancel_alarm(alarm) {
+  clearTimeout(alarm);
+}
 
 /*! Returns the number of milliseconds elapsed since either the browser
  * navigationStart event or the UNIX epoch, depending on availability.
  * Where the browser supports 'performance' we use that as it is more
- * accurate (microsoeconds will be returned in the fractional part)
+ * accurate (microseconds will be returned in the fractional part)
  * and more reliable as it does not rely on the system time.
  * Where 'performance' is not available, we will fall back to
  * Date().getTime().
+ * @param use_timestamp if true, a timestamp is returned,
  * @return real: the time
  */
 /** @export */
-const CS_now = (function () {
+const CS_now = (function (use_timestamp) {
   var performance = window.performance || {};
 
   performance.now = (function () {
     return (performance.now || performance.webkitNow || performance.msNow
       || performance.oNow || performance.mozNow
-      || function () { return new Date().getTime(); });
+      || function () {
+        return new Date().getTime();
+      });
   })();
 
-  return performance.now();
+  return use_timestamp ? Date.now() : performance.now();
 });
 
 /*! Sleeps for the given delay in ms.
- * @param delay the delay to wait,
- * @return Promiose: a primise object.
+ * @param delay the delay to wait.
  */
 /** @export */
-function CS_sleep(time_ms) {
+async function CS_sleep(time_ms) {
+  await CS_sleep_promise(time_ms);
+}
+
+/*! Sleeps for the given delay in ms.
+ * @param delay the delay to wait,
+ * @return Promise: a promise object.
+ */
+/** @export */
+function CS_sleep_promise(time_ms) {
   return new Promise((resolve) => setTimeout(resolve, time_ms));
 }
 
@@ -543,27 +557,27 @@ function CS_debounce(fn, delay_ms) {
 }
 
 /*! Throttles a function call: the function is called
- * at a frequency that no more than the given threshhold delay.
+ * at a frequency that no more than the given threshold delay.
  * https://remysharp.com/2010/07/21/throttling-function-calls
  * @param fn the function,
- * @param threshhold the delay in milliseconds,
+ * @param threshold the delay in milliseconds,
  * @param scope the scope,
  * @return void.
  */
 /** @export */
-function CS_throttle(fn, threshhold_ms, scope) {
-  threshhold_ms || (threshhold_ms = 250);
+function CS_throttle(fn, threshold_ms, scope) {
+  threshold_ms || (threshold_ms = 250);
   var last, deferTimer;
   return function () {
     var context = scope || this;
     var now = +new Date, args = arguments;
-    if (last && now < last + threshhold_ms) {
+    if (last && now < last + threshold_ms) {
       // hold on to it
       clearTimeout(deferTimer);
       deferTimer = setTimeout(function () {
         last = now;
         fn.apply(context, args);
-      }, threshhold_ms);
+      }, threshold_ms);
     }
     else {
       last = now;
@@ -583,7 +597,7 @@ function CS_throttle(fn, threshhold_ms, scope) {
  */
 /** @export */
 function CS_animate(steps, duration_ms, callback) {
-  // work arround: firefow does the animation too slowly
+  // work around: firefox does the animation too slowly
   let browser = CS_get_browser();
   if (steps == 0) {
     callback(0);
@@ -604,7 +618,7 @@ function CS_animate(steps, duration_ms, callback) {
       /* do the next step */
       if (step < steps - 1) {
         /* sleep the given delay */
-        CS_sleep(delay).then(() => {
+        CS_sleep_promise(delay).then(() => {
           _animate(step + 1);
         });
       }
@@ -709,7 +723,7 @@ function CS_drag(element, onstart, ondrag, onend) {
   // drag status
   let dragged = false;
 
-  // keep the grag start screen position
+  // keep the drag start screen position
   let drag_start = get_xy(window.event);
 
   /*! Stop the drag process.
@@ -757,13 +771,13 @@ function CS_drag(element, onstart, ondrag, onend) {
     // stop the event propagation
     CS_stop_propagation(event);
 
-    // if the left mouse buton key is not pressed
+    // if the left mouse button key is not pressed
     if (CS_is_mouse_event_with_button(event, CS_mouse_buttons.primary) == 0) {
       stop_drag(event, true);
       return false;
     }
 
-    // keep the grag start screen position
+    // keep the drag start screen position
     // let mouse = CS_getxy(event);
     let mouse = get_xy(window.event);
 
@@ -796,7 +810,7 @@ function CS_drag(element, onstart, ondrag, onend) {
         // log
         console.log('dragging interrupted by callback');
 
-        // stop the grag
+        // stop the drag
         stop_drag(event, true);
       }
     }
@@ -869,7 +883,7 @@ const CS_double_click_time_ms = 500;
  * @param onclick the on click event handler,
  * @param ondblclick the on double click event handler,
  * @param equiv optional event => boolean callback that return true if the
- * given event is equivallent to a double click, mainly used for
+ * given event is equivalent to a double click, mainly used for
  * touch event devices as ipads,
  * @param double_click_ms the double click timing in ms,
  */
@@ -904,7 +918,7 @@ function CS_double_click_handler(
       click_alarm = false;
     }
 
-    // if equivallent event or if double cick
+    // if equivalent event or if double click
     if ((equiv && equiv(event)) || now - last_click_time < double_click_ms) {
       // double-lick
       last_click_time = 0;

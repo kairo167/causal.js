@@ -238,6 +238,7 @@ var CS_ajax_error_notified = false;
  *   args:        the arguments { 'name': 'value, ...} or false,
  *   as_json:     send the data as json  (false by default)
  *   binary:      the data to retrieve are binary (false by default),
+ *   debug:       the debug boolean,
  *   force:       force the download, bypassing the browser cache
  *                (false by default),
  *   headers:     additional headers as {"name": value, "name": "value", ...},
@@ -257,6 +258,7 @@ function _CS_ajax_load(options) {
       case 'args':
       case 'as_json':
       case 'binary':
+      case 'debug':
       case 'force':
       case 'headers':
       case 'method':
@@ -264,11 +266,23 @@ function _CS_ajax_load(options) {
       case 'onprogress':
       case 'onsuccess':
       case 'synchronous':
-      case 'url': break;
+      case 'url':
+        break;
 
-      default: console.error('Error: unexepcted option name "', option, '"');
+      default:
+        console.error('Error: unexpected option name "', option, '"');
+        return false;
     }
   });
+
+  // on debug, log the url
+  if (options.debug) {
+    console.log(
+      'ajax load',
+      'url=', options.url, 
+      'headers=', options.headers, 
+      'args=', options.args);
+  }
 
   // check the url
   if (!options.url) {
@@ -333,8 +347,10 @@ function _CS_ajax_load(options) {
   // indicate start loading
   xhr.onloadstart = function () {
     // log
-    console.log('start to load ', options.url, ' ', options.args);
-
+    if (options.debug) {
+      console.log('start to load ', options.url);
+    }
+    
     // on synchronous load
     if (options.synchronous) {
       // on first loading
@@ -465,10 +481,11 @@ function _CS_ajax_load(options) {
  *   method:      'get' or 'post' ('post' by default),
  *   onprogress:  the progress function
  *   url:         the url of the file to load
- * }.
+ * },
+ * @return Promise.
  */
 /** @export */
-function CS_ajax_load(options) {
+function CS_ajax_load_promise(options) {
   return new Promise((resolve, reject) => {
     options.onerror = options.onerror ? options.onerror : reject;
     options.onsuccess = options.onsuccess ? options.onsuccess : resolve;
@@ -645,15 +662,15 @@ function CS_watch(object, property) {
   });
 }
 
-/*! Manage the cookie GDPR authorizaton. */
+/*! Manage the cookie GDPR authorization. */
 /** @export */
 var CS_cookie_allowed = false;
 
-/*! Manage the cookie GDPR authorizaton. */
+/*! Manage the cookie GDPR authorization. */
 /** @export */
 var CS_cookie_allowed_checked = false;
 
-/*! Return the GDPR cookie authorizaton.
+/*! Return the GDPR cookie authorization.
  * @return boolean: the authorizaton status.
  */
 /** @export */
@@ -665,7 +682,7 @@ function CS_is_cookie_allowed() {
   return CS_cookie_allowed;
 }
 
-/*! Returns the GDPR cookie authorizaton.
+/*! Returns the GDPR cookie authorization.
  * @return boolean: the authorizaton status.
  */
 /** @export */

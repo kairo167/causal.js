@@ -365,7 +365,7 @@ function CS_ajax_form(parent,
   }
 
   // request the form content
-  CS_ajax_load({
+  CS_ajax_load_promise({
     url: url,
     args: args,
 
@@ -384,7 +384,7 @@ function CS_ajax_form(parent,
             console.log('call form on success with args = ', args);
 
             // validate with ajax
-            CS_ajax_load({
+            CS_ajax_load_promise({
               url: url,
               args: args,
               onsuccess:

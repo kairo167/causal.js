@@ -4,7 +4,7 @@ CS_add_pageCS$3
 CS_add_readyCS$4
 CS_add_stylesCS$5
 CS_ajax_formCS$6
-CS_ajax_loadCS$7
+CS_ajax_load_promiseCS$7
 CS_alarmCS$8
 CS_animateCS$9
 CS_bindCS$10

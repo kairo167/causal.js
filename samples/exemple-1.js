@@ -16,47 +16,49 @@
 /*                                                                  */
 /* -*-header-*- */
 function openDialog() {
-  CS_ajax_load ({
-    url:       "/templates/exemple-1-dialog.html",
-    onsuccess: function (content) {
-		         CS_dialog_open ({
-                     content: content,
-                     styles:  "left: 3em; top: 4em; width: 20em; height: 20em"
-                    });
-               });
+    CS_ajax_load_promise({
+        url: "/templates/exemple-1-dialog.html",
+        onsuccess: function (content) {
+            CS_dialog_open({
+                content: content,
+                styles: "left: 3em; top: 4em; width: 20em; height: 20em"
+            });
+        });
 }
 
 var menu_opened = false;
 
-function openMenu (event) {
-    if (! menu_opened) {
-	menu_opened = true;
-	var event    = (event ? event : window.event);
-	var location = {left:   event.clientX + "px",
-			top:    event.clientY + "px"};
-	if (ieversion <= 6) {
-	    location.width = "6em";
-	}
-        CS_ajax_load ({
-          url:       "/templates/exemple-1-menu.html",
-	  onsuccess: function (content) {
-		       menu (content,
-			     function() {
-				 menu_opened = false;
-			     }, location);
-                     }
+function openMenu(event) {
+    if (!menu_opened) {
+        menu_opened = true;
+        var event = (event ? event : window.event);
+        var location = {
+            left: event.clientX + "px",
+            top: event.clientY + "px"
+        };
+        if (ieversion <= 6) {
+            location.width = "6em";
+        }
+        CS_ajax_load_promise({
+            url: "/templates/exemple-1-menu.html",
+            onsuccess: function (content) {
+                menu(content,
+                    function () {
+                        menu_opened = false;
+                    }, location);
+            }
         });
     }
 }
 
-function updateRange (id, value, postfix) {
-    var auto_refresh_value = document.getElementById (id);
+function updateRange(id, value, postfix) {
+    var auto_refresh_value = document.getElementById(id);
     auto_refresh_value.innerHTML = value + postfix;
 }
 
-function addStatus (text) {
-    var status = document.getElementsByClassName ("status");
+function addStatus(text) {
+    var status = document.getElementsByClassName("status");
     for (var i = 0; i < status.length; i++) {
-	status[i].innerHTML += text;
+        status[i].innerHTML += text;
     }
 }

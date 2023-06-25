@@ -177,7 +177,7 @@ function CS_bind_editable(elem) {
           Object.defineProperty(args, name, elem.input.value);
 
           // ajax load the url
-          CS_ajax_load({
+          CS_ajax_load_promise({
             url: elem.attributes['ajax'].value,
             args: args,
             onsuccess: function () {
