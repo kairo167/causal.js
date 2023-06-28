@@ -226,7 +226,9 @@ function CS_create_xhr() {
     }
   }
   window.alert("unable to load ajax");
-  return null;     // non supporté
+
+  // not supported (good luck!)
+  return null;
 }
 
 var CS_ajax_error_notified = false;
@@ -236,8 +238,8 @@ var CS_ajax_error_notified = false;
  * @param options object as
  * {
  *   args:        the arguments { 'name': 'value, ...} or false,
- *   as_json:     send the data as json  (false by default)
  *   binary:      the data to retrieve are binary (false by default),
+ *   data:        send the args as 'form', 'json' or 'url',
  *   debug:       the debug boolean,
  *   force:       force the download, bypassing the browser cache
  *                (false by default),
@@ -256,8 +258,19 @@ function _CS_ajax_load(options) {
   Object.keys(options).forEach(option => {
     switch (option) {
       case 'args':
-      case 'as_json':
       case 'binary':
+        break;
+
+      case 'data':
+        switch (options[option]) {
+          case 'form':
+          case 'json':
+          case 'url':
+            break;
+          default:
+            console.error('Error: unexpected data option "', option, '"');
+            return false;
+        }
       case 'debug':
       case 'force':
       case 'headers':
@@ -275,17 +288,20 @@ function _CS_ajax_load(options) {
     }
   });
 
+  // get the url (that cound be change on options.data = 'url')
+  let url = options.url;
+
   // on debug, log the url
   if (options.debug) {
     console.log(
       'ajax load',
-      'url=', options.url, 
-      'headers=', options.headers, 
+      'url=', url,
+      'headers=', options.headers,
       'args=', options.args);
   }
 
   // check the url
-  if (!options.url) {
+  if (!url) {
     return;
   }
 
@@ -304,31 +320,39 @@ function _CS_ajax_load(options) {
   }
 
   /* prepare the values from the form */
-  let data;
+  let data = null;
   if (options.args) {
-    if (options.as_json) {
-      data = JSON.stringify(options.args);
-    }
-    else {
-      data = ! !window.FormData ? new FormData() : false;
-      if (data) {
-        for (let index in options.args) {
-          data.append(index, options.args[index]);
-        }
-      }
-      else {
-        data = "";
-        for (let index in options.args) {
-          if (data.length > 0) {
-            data += "&";
+    switch (options.data) {
+      case 'form': {
+        data = ! !window.FormData ? new FormData() : false;
+        if (data) {
+          for (let index in options.args) {
+            data.append(index, options.args[index]);
           }
-          data += index + "=" + encodeURIComponent(options.args[index]);
         }
+        break;
+      }
+
+      case 'json': {
+        data = JSON.stringify(options.args);
+        break;
+      }
+
+      case 'url': {
+        first = true;
+        for (let index in options.args) {
+          if (first) {
+            first = false;
+            url += '?';
+          }
+          else {
+            url += '&';
+          }
+          url += index + '=' + encodeURIComponent(options.args[index]);
+        }
+        break;
       }
     }
-  }
-  else {
-    data = null;
   }
 
   // create the ajax query
@@ -345,12 +369,12 @@ function _CS_ajax_load(options) {
   }
 
   // indicate start loading
-  xhr.onloadstart = function () {
+  xhr.onloadstart = () => {
     // log
     if (options.debug) {
-      console.log('start to load ', options.url);
+      console.log('start to load ', url);
     }
-    
+
     // on synchronous load
     if (options.synchronous) {
       // on first loading
@@ -374,9 +398,9 @@ function _CS_ajax_load(options) {
   };
 
   // stop loading
-  xhr.onloadend = function () {
+  xhr.onloadend = () => {
     // log
-    //console.log('end to load ', options.url, ' ', options.args);
+    //console.log('end to load ', url, ' ', options.args);
 
     // on synchronous load
     if (options.synchronous) {
@@ -396,7 +420,7 @@ function _CS_ajax_load(options) {
   };
 
   // add the event listeners
-  xhr.onload = function () {
+  xhr.onload = () => {
     switch (xhr.status) {
       case 200:     // OK
         if (options.onsuccess) {
@@ -424,7 +448,7 @@ function _CS_ajax_load(options) {
 
       case 404:     // not found
       default:
-        console.log("Ajax error: " + xhr.statusText + ": " + options.url);
+        console.log("Ajax error: " + xhr.statusText + ": " + url);
         if (options.onerror) {
           options.onerror(xhr.statusText);
         }
@@ -433,8 +457,9 @@ function _CS_ajax_load(options) {
   };
 
   // open the query
-  xhr.open(options.method,
-    options.url,
+  xhr.open(
+    options.method,
+    url,
     options.synchronous == true ? false : true);
 
   // IE11 fix: the response type must be set after the open
@@ -442,7 +467,7 @@ function _CS_ajax_load(options) {
     xhr.responseType = 'arraybuffer';
   }
 
-  // add the additionan headers
+  // add the additional headers
   if (options.headers) {
     Object.entries(options.headers).forEach(key_value => {
       xhr.setRequestHeader(key_value[0], key_value[1]);
@@ -454,7 +479,7 @@ function _CS_ajax_load(options) {
     if (!options.headers || !options.headers.hasOwnProperty("Content-Type")) {
       xhr.setRequestHeader(
         "Content-Type",
-        options.as_json ? "application/json; charset=UTF-8"
+        options.data == 'json' ? "application/json; charset=UTF-8"
           : "application/x-www-form-urlencoded; charset=UTF-8");
     }
   }
@@ -473,8 +498,8 @@ function _CS_ajax_load(options) {
  * @param options object as
  * {
  *   args:        the arguments { 'name': 'value, ...} or false,
- *   as_json:     send the data as json  (false by default)
  *   binary:      the data to retrieve are binary (false by default),
+ *   data:        send the args as 'form', 'json' or 'url',
  *   force:       force the download, bypassing the browser cache
  *                (false by default),
  *   headers:     additional headers as {"name": value, "name": "value", ...},
